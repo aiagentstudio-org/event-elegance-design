@@ -150,6 +150,30 @@
     backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
     @apply shadow-2xl;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .decorative-text {
+    position: absolute;
+    font-family: var(--font-display);
+    font-size: 20rem;
+    line-height: 1;
+    font-weight: 700;
+    color: var(--gold);
+    opacity: 0.03;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    white-space: nowrap;
   }
 
   .noise-overlay {

@@ -7,6 +7,7 @@ import { Sparkles, ShieldCheck, Palette, Users } from "lucide-react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SplitType from "split-type";
 import about from "@/assets/about-team.jpg";
 import venue from "@/assets/venue-hero.jpg";
 
@@ -53,16 +54,28 @@ function AboutPage() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
-      // Reveal sections
-      gsap.utils.toArray<HTMLElement>("section").forEach((section) => {
-        gsap.from(section, {
+      // Hero Title Animation
+      const heroTitle = new SplitType(".hero-title", { types: "chars,words" });
+      gsap.from(heroTitle.chars, {
+        y: 40,
+        opacity: 0,
+        rotateX: -30,
+        stagger: 0.02,
+        duration: 1,
+        ease: "power4.out"
+      });
+
+      // Reveal sections using unified data-animate
+      const reveals = document.querySelectorAll("[data-animate]");
+      reveals.forEach((el) => {
+        gsap.from(el, {
           scrollTrigger: {
-            trigger: section,
+            trigger: el,
             start: "top 85%",
           },
           opacity: 0,
           y: 40,
-          duration: 1,
+          duration: 1.2,
           ease: "power3.out",
         });
       });
@@ -86,9 +99,9 @@ function AboutPage() {
           trigger: ".values-grid",
           start: "top 80%",
         },
-        scale: 0.9,
+        scale: 0.95,
         opacity: 0,
-        stagger: 0.15,
+        stagger: 0.1,
         duration: 1,
         ease: "power2.out",
       });
@@ -103,29 +116,30 @@ function AboutPage() {
         <PageHero
           eyebrow="Our Legacy"
           title={
-            <>
+            <span className="hero-title">
               The studio behind every <span className="italic text-gold">unforgettable</span> moment.
-            </>
+            </span>
           }
           subtitle="Boutique. Bespoke. Built on twelve years of obsessive craft."
           image={venue}
         />
 
-        <section className="container-luxe py-24 md:py-32 grid md:grid-cols-2 gap-16 items-center">
+        <section className="container-luxe py-24 md:py-40 grid md:grid-cols-2 gap-16 items-center relative overflow-hidden" data-animate>
+          <div className="decorative-text -top-10 -right-20 opacity-[0.03]">EST. 2012</div>
           <div className="relative group overflow-hidden rounded-2xl shadow-2xl">
             <img
               src={about}
               alt="RS Group Events team"
-              className="w-full h-[600px] object-cover transition-transform duration-700 group-hover:scale-105"
+              className="w-full h-[600px] object-cover transition-transform duration-700 group-hover:scale-105 grayscale hover:grayscale-0"
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/40 to-transparent" />
           </div>
-          <div className="space-y-8">
+          <div className="space-y-8 relative z-10">
             <div className="gold-divider !justify-start">
               <span className="eyebrow">Our Story</span>
             </div>
-            <h2 className="font-display text-4xl md:text-6xl text-navy-deep leading-tight">A passion that became a craft.</h2>
+            <h2 className="font-display text-5xl md:text-7xl text-navy-deep leading-tight">A passion that became a craft.</h2>
             <div className="space-y-6 text-charcoal/80 text-lg font-light leading-relaxed">
               <p>
                 RS Group Events began with a single, simple belief: every celebration deserves to be remembered. What
@@ -140,16 +154,16 @@ function AboutPage() {
           </div>
         </section>
 
-        <section className="relative py-24 md:py-32 overflow-hidden">
+        <section className="relative py-24 md:py-40 overflow-hidden" data-animate>
           <div className="absolute inset-0 bg-navy-deep -skew-y-3 origin-right scale-110" />
           <div className="container-luxe relative grid md:grid-cols-2 gap-8">
-            <div className="glass-card p-12 border-l-4 border-gold group hover:bg-white/10 transition-colors">
+            <div className="glass-card p-12 border-l-4 border-gold group hover:bg-white/10 transition-all duration-500">
               <div className="eyebrow mb-6 text-gold/80">Our Mission</div>
               <p className="font-display text-3xl md:text-4xl text-ivory leading-tight group-hover:translate-x-2 transition-transform">
                 To turn every milestone into a masterpiece — through design, detail and devotion.
               </p>
             </div>
-            <div className="glass-card p-12 border-l-4 border-gold group hover:bg-white/10 transition-colors">
+            <div className="glass-card p-12 border-l-4 border-gold group hover:bg-white/10 transition-all duration-500">
               <div className="eyebrow mb-6 text-gold/80">Our Vision</div>
               <p className="font-display text-3xl md:text-4xl text-ivory leading-tight group-hover:translate-x-2 transition-transform">
                 To be Delhi NCR's most loved luxury event studio — known for elegance, integrity and care.
@@ -158,13 +172,13 @@ function AboutPage() {
           </div>
         </section>
 
-        <section className="container-luxe py-24 md:py-32">
-          <SectionHeading eyebrow="What We Believe" title="Our core values" />
-          <div className="values-grid mt-20 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <section className="container-luxe py-24 md:py-40 relative" data-animate>
+          <SectionHeading eyebrow="What We Believe" title="Our core values" bgText="ETHOS" />
+          <div className="values-grid mt-24 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((v) => (
               <div
                 key={v.title}
-                className="value-card glass-card p-10 text-center group hover:-translate-y-2 transition-all duration-500"
+                className="value-card glass-card p-10 text-center group hover:-translate-y-2 transition-all duration-700 hover:border-gold/50"
               >
                 <div className="mx-auto h-16 w-16 rounded-2xl bg-gold/10 flex items-center justify-center mb-8 text-gold group-hover:bg-gold group-hover:text-navy-deep transition-colors duration-500">
                   <v.icon size={28} />
@@ -176,16 +190,17 @@ function AboutPage() {
           </div>
         </section>
 
-        <section className="bg-ivory py-24 md:py-32">
-          <div className="container-luxe">
+        <section className="bg-ivory py-24 md:py-40 relative overflow-hidden" data-animate>
+          <div className="decorative-text -bottom-20 -left-20 opacity-[0.02]">ALCHMY</div>
+          <div className="container-luxe relative z-10">
             <SectionHeading eyebrow="Our Approach" title="The Alchemy of Planning" />
-            <div className="mt-20 grid md:grid-cols-3 gap-10">
+            <div className="mt-24 grid md:grid-cols-3 gap-10">
               {steps.map((s) => (
                 <div key={s.n} className="group relative">
                   <div className="absolute -top-10 -left-6 font-display text-[120px] text-gold/10 group-hover:text-gold/20 transition-colors pointer-events-none">
                     {s.n}
                   </div>
-                  <div className="relative glass-card p-12 border-t-2 border-transparent hover:border-gold transition-all duration-700">
+                  <div className="relative glass-card p-12 border-t-2 border-transparent hover:border-gold transition-all duration-700 bg-white/40">
                     <h3 className="text-3xl font-display text-navy-deep mb-6">{s.t}</h3>
                     <p className="text-charcoal/75 leading-relaxed font-light">{s.d}</p>
                   </div>
@@ -195,15 +210,15 @@ function AboutPage() {
           </div>
         </section>
 
-        <section className="bg-navy-deep text-ivory overflow-hidden relative">
+        <section className="bg-navy-deep text-ivory overflow-hidden relative" data-animate>
           <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
-          <div className="container-luxe relative py-20 stats-grid grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+          <div className="container-luxe relative py-24 md:py-32 stats-grid grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
             {stats.map((s) => (
               <div key={s.l} className="stat-item group">
-                <div className="font-display text-5xl md:text-7xl text-gold mb-3 group-hover:scale-110 transition-transform">
+                <div className="font-display text-5xl md:text-8xl text-gold mb-3 group-hover:scale-110 transition-transform">
                   {s.n}
                 </div>
-                <div className="text-xs uppercase tracking-[0.3em] text-ivory/60 group-hover:text-gold transition-colors">
+                <div className="text-[10px] uppercase tracking-[0.4em] text-ivory/40 group-hover:text-gold transition-colors">
                   {s.l}
                 </div>
               </div>
@@ -211,11 +226,11 @@ function AboutPage() {
           </div>
         </section>
 
-        <section className="relative overflow-hidden">
+        <section className="relative overflow-hidden" data-animate>
           <div className="absolute inset-0 bg-gold" />
-          <div className="container-luxe py-24 text-center relative">
-            <h2 className="font-display text-4xl md:text-6xl text-navy-deep mb-12">Plan your event with us.</h2>
-            <CtaButton to="/contact" variant="navy" className="scale-110">
+          <div className="container-luxe py-28 text-center relative">
+            <h2 className="font-display text-5xl md:text-8xl text-navy-deep mb-12 italic leading-tight">Plan your event with us.</h2>
+            <CtaButton to="/contact" variant="navy" className="scale-110 px-12 py-5">
               Begin the Journey
             </CtaButton>
           </div>

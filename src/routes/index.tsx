@@ -176,9 +176,10 @@ function HomePage() {
         </section>
 
         {/* WHAT WE DO */}
-        <section className="container-luxe py-20 md:py-32" data-animate>
-          <SectionHeading eyebrow="Our Core" title="Bespoke Event Architecture" subtitle="We specialize in events that demand perfection, creativity, and flawless execution." />
-          <div className="mt-16 grid md:grid-cols-3 gap-8">
+        <section className="container-luxe py-32 md:py-48 relative overflow-hidden" data-animate>
+          <div className="decorative-text top-40 -left-20 opacity-[0.02] select-none pointer-events-none">EXPERTISE</div>
+          <SectionHeading eyebrow="Our Core" title="Bespoke Event Architecture" subtitle="We specialize in events that demand perfection, creativity, and flawless execution." bgText="STUDIO" />
+          <div className="mt-20 grid md:grid-cols-3 gap-10">
             {services.map((s) => (
               <div key={s.title} className="group glass-card p-10 border border-white/5 hover:border-gold transition-all duration-1000 hover:-translate-y-4">
                 <div className="h-16 w-16 rounded-full bg-gold/10 flex items-center justify-center mb-8 group-hover:bg-gold transition-colors duration-700">
@@ -194,45 +195,56 @@ function HomePage() {
         </section>
 
         {/* ABOUT SNAPSHOT */}
-        <section className="bg-pale-gold/20 overflow-hidden" data-animate>
-          <div className="container-luxe py-20 md:py-32 grid md:grid-cols-2 gap-20 items-center">
+        <section className="bg-pale-gold/10 overflow-hidden relative" data-animate>
+          <div className="decorative-text -bottom-20 -right-20 opacity-[0.03] select-none pointer-events-none">ETHOS</div>
+          <div className="container-luxe py-32 md:py-48 grid md:grid-cols-2 gap-24 items-center">
             <div className="relative perspective-container">
-              <div className="isometric-card glass-card p-3">
-                <img src={about} alt="RS Group Events team" className="w-full h-[600px] object-cover" loading="lazy" />
+              <div className="isometric-card glass-card p-4 border-gold/10">
+                <img src={about} alt="RS Group Events team" className="w-full h-[700px] object-cover" loading="lazy" />
               </div>
-              <div className="absolute -bottom-10 -right-10 hidden lg:block bg-navy text-ivory p-10 max-w-[260px] glass-card border-gold/20 shadow-2xl z-20">
-                <div className="font-display text-6xl text-gold">12+</div>
-                <div className="text-[10px] uppercase tracking-[0.2em] mt-3 font-bold text-ivory/60">Years of Masterful Craftsmanship</div>
+              <div className="absolute -bottom-12 -right-12 hidden lg:block bg-navy-deep text-ivory p-12 max-w-[280px] glass-card border-gold/30 shadow-3xl z-20">
+                <div className="font-display text-7xl text-gold">12+</div>
+                <div className="text-[11px] uppercase tracking-[0.3em] mt-4 font-bold text-ivory/60 leading-relaxed">Years of Masterful Craftsmanship</div>
               </div>
             </div>
-            <div>
-              <div className="gold-divider mb-8 !justify-start"><span className="eyebrow">The Studio</span></div>
-              <h2 className="font-display text-5xl md:text-7xl text-navy leading-[1.1]">Where every detail <br/> becomes a legacy.</h2>
-              <p className="mt-10 text-lg text-charcoal/70 leading-relaxed font-light">
+            <div className="space-y-10">
+              <div className="gold-divider !justify-start"><span className="eyebrow">The Studio</span></div>
+              <h2 className="font-display text-6xl md:text-8xl text-navy-deep leading-[1.05]">Where every detail <br/> becomes a <span className="italic text-gold">legacy.</span></h2>
+              <p className="text-xl text-charcoal/70 leading-relaxed font-light max-w-xl">
                 Founded on the principles of architectural precision and artistic flair, RS Group Events is a boutique production studio. We don't just plan; we curate. Every texture, every lighting cue, and every guest interaction is designed to evoke a sense of wonder.
               </p>
-              <div className="mt-12"><CtaButton to="/about" variant="navy" className="px-12">Our Story</CtaButton></div>
+              <div className="pt-6"><CtaButton to="/about" variant="navy" className="px-16 py-5 scale-110">Our Story</CtaButton></div>
             </div>
           </div>
         </section>
 
         {/* GALLERY */}
-        <section className="container-luxe py-20 md:py-32" data-animate>
-          <SectionHeading eyebrow="The Portfolio" title="Exquisite Moments" subtitle="A collection of recent celebrations that define our signature aesthetic." />
-          <div className="mt-20 grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-            {galleryImgs.map((src, i) => (
-              <Link to="/gallery" key={i} className={`relative overflow-hidden group gallery-item glass-card p-1 ${i === 0 ? "md:row-span-2 md:col-span-2 aspect-square md:aspect-auto" : "aspect-[4/5]"}`}>
-                <div className="h-full w-full overflow-hidden">
-                  <img src={src} alt="Event" className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" loading="lazy" />
-                </div>
-                <div className="absolute inset-0 bg-navy-deep/0 group-hover:bg-navy-deep/80 transition-all duration-700 flex flex-col items-center justify-center p-8 text-center">
-                  <span className="text-gold text-[10px] uppercase tracking-[0.4em] opacity-0 group-hover:opacity-100 transition-all duration-700 -translate-y-4 group-hover:translate-y-0">View Case Study</span>
-                  <div className="h-px w-0 bg-gold/50 mt-4 group-hover:w-16 transition-all duration-700" />
-                </div>
-              </Link>
-            ))}
+        <section className="container-luxe py-32 md:py-48 relative overflow-hidden" data-animate>
+          <div className="decorative-text top-20 right-0 opacity-[0.02] -rotate-90 select-none pointer-events-none">ARCHIVE</div>
+          <SectionHeading eyebrow="The Portfolio" title="Exquisite Moments" subtitle="A collection of recent celebrations that define our signature aesthetic." bgText="CURATED" />
+          <div className="mt-20 grid grid-cols-2 md:grid-cols-12 gap-6 md:gap-8">
+            {galleryImgs.map((src, i) => {
+              const isLarge = i === 0;
+              return (
+                <Link 
+                  to="/gallery" 
+                  key={i} 
+                  className={`relative overflow-hidden group gallery-item border border-border/10 shadow-sm hover:shadow-3xl transition-all duration-1000 ${
+                    isLarge ? "md:col-span-8 md:row-span-2 aspect-square md:aspect-auto" : "md:col-span-4 aspect-[4/5]"
+                  }`}
+                >
+                  <div className="h-full w-full overflow-hidden">
+                    <img src={src} alt="Event" className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" />
+                  </div>
+                  <div className="absolute inset-0 bg-navy-deep/60 opacity-0 group-hover:opacity-100 transition-all duration-700 flex flex-col items-center justify-center p-8 text-center backdrop-blur-[2px]">
+                    <span className="text-gold text-[11px] uppercase tracking-[0.5em] opacity-0 group-hover:opacity-100 transition-all duration-700 -translate-y-4 group-hover:translate-y-0 font-bold">View Gallery</span>
+                    <div className="h-[1px] w-0 bg-gold mt-6 group-hover:w-20 transition-all duration-700" />
+                  </div>
+                </Link>
+              );
+            })}
           </div>
-          <div className="mt-20 text-center"><CtaButton to="/gallery" variant="navy" className="px-14">Explore Full Portfolio</CtaButton></div>
+          <div className="mt-24 text-center"><CtaButton to="/gallery" variant="navy" className="px-20 py-6 text-lg scale-110">Explore Full Portfolio</CtaButton></div>
         </section>
 
         {/* TESTIMONIALS */}
