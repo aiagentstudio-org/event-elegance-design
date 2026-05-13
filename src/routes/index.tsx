@@ -175,6 +175,30 @@ function HomePage() {
           </div>
         </section>
 
+        {/* PHILOSOPHY - BRUTALIST FILLER */}
+        <section className="relative py-32 md:py-56 overflow-hidden border-b border-white/5" data-animate>
+          <div className="container-luxe grid lg:grid-cols-2 gap-20 items-end">
+            <div className="relative z-10">
+              <div className="gold-divider !justify-start mb-10"><span className="eyebrow">The Philosophy</span></div>
+              <h2 className="font-display text-6xl md:text-[8rem] text-navy leading-[0.9] tracking-tighter">
+                Architecture <br />
+                <span className="italic text-gold">of Joy.</span>
+              </h2>
+            </div>
+            <div className="relative z-10 max-w-lg">
+              <p className="text-xl md:text-2xl text-charcoal/60 font-light leading-relaxed">
+                We believe an event is not just a date on a calendar, but a complex intersection of space, light, and emotion. Our "Studio" approach means we treat every celebration as a bespoke architectural project.
+              </p>
+              <div className="mt-12 flex items-center gap-6">
+                 <div className="h-px w-20 bg-gold" />
+                 <span className="text-[10px] uppercase tracking-[0.4em] text-gold font-bold">Designing for the senses</span>
+              </div>
+            </div>
+          </div>
+          <div className="decorative-text -bottom-20 -left-20 opacity-[0.05] rotate-12">EMOTION</div>
+          <div className="absolute top-1/2 right-0 w-1/3 h-px bg-gold/10 -translate-y-1/2" />
+        </section>
+
         {/* WHAT WE DO */}
         <section className="container-luxe py-32 md:py-48 relative overflow-hidden" data-animate>
           <div className="decorative-text top-40 -left-20 opacity-[0.02] select-none pointer-events-none">EXPERTISE</div>
@@ -276,7 +300,7 @@ function HomePage() {
             <h2 className="font-display text-5xl md:text-8xl text-navy leading-tight">Let's craft your <br/> next masterpiece.</h2>
             <p className="mt-8 text-navy/70 text-lg md:text-xl font-light">Available for exclusive bookings across Delhi NCR and destination weddings.</p>
             <div className="mt-14 flex flex-wrap justify-center gap-6">
-              <CtaButton href="tel:+919876543210" variant="navy" className="px-12 py-5 shadow-2xl">Call Representative</CtaButton>
+              <CtaButton href="tel:+919953595353" variant="navy" className="px-12 py-5 shadow-2xl">Call Representative</CtaButton>
               <CtaButton to="/contact" variant="navy" className="!bg-navy-deep px-12 py-5 shadow-2xl">Send Inquiry</CtaButton>
             </div>
           </div>

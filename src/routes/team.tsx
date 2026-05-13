@@ -152,6 +152,38 @@ function TeamPage() {
           </div>
         </section>
 
+        {/* THE ARTISAN COLLECTIVE */}
+        <section className="bg-navy py-32 md:py-48 relative overflow-hidden" data-animate>
+          <div className="container-luxe">
+            <div className="max-w-2xl mb-24">
+               <div className="gold-divider !justify-start mb-10"><span className="eyebrow text-gold/60">Our Network</span></div>
+               <h2 className="font-display text-5xl md:text-7xl text-white tracking-tighter leading-tight">
+                 The Artisan <br />
+                 <span className="italic text-gold">Collective.</span>
+               </h2>
+               <p className="mt-8 text-white/50 text-xl leading-relaxed font-light">
+                 RS Group isn't just a team; it's a curated hub of the world's most talented florists, set designers, and lighting technicians.
+               </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-0.5 bg-white/10 border border-white/10">
+               {[
+                 { role: "Visual Artists", count: "12+", desc: "Sculpting light and space" },
+                 { role: "Floral Architects", count: "08", desc: "Organic structural design" },
+                 { role: "Logistic Strategists", count: "15", desc: "The precision engine" },
+                 { role: "Storytellers", count: "05", desc: "Capturing the intangible" }
+               ].map((item, idx) => (
+                 <div key={idx} className="bg-navy p-12 hover:bg-navy-deep transition-colors group">
+                    <div className="text-gold font-display text-4xl mb-4 group-hover:scale-110 transition-transform origin-left">{item.count}</div>
+                    <div className="text-white text-lg font-medium mb-2">{item.role}</div>
+                    <div className="text-white/40 text-sm">{item.desc}</div>
+                 </div>
+               ))}
+            </div>
+          </div>
+          <div className="decorative-text -bottom-10 right-0 opacity-[0.03]">CRAFT</div>
+        </section>
+
         {/* CORE VALUES */}
         <section className="bg-navy py-24 text-ivory relative overflow-hidden">
           <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />

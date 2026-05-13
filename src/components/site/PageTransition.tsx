@@ -7,38 +7,53 @@ interface PageTransitionProps {
 
 export function PageTransition({ children }: PageTransitionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const wipeRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const tl = gsap.timeline();
+    
+    // Reset positions
+    gsap.set(wipeRef.current, { scaleY: 1, transformOrigin: "bottom" });
+    gsap.set(contentRef.current, { opacity: 0, y: 30 });
 
-    // Entrance Animation
-    tl.to(overlayRef.current, {
+    tl.to(wipeRef.current, {
       scaleY: 0,
-      transformOrigin: "top",
-      duration: 0.8,
+      duration: 1.2,
       ease: "power4.inOut",
+      delay: 0.1
     })
-    .fromTo(
-      containerRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
-      "-=0.4"
-    );
+    .to(contentRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.6");
 
     return () => {
-      // Exit Animation could go here if we were using a more complex router interceptor
+      // Exit animation logic would need a router interceptor, 
+      // but keyed re-mounts handle the entrance beautifully.
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full">
+    <div ref={containerRef} className="relative w-full overflow-hidden">
+      {/* Wipe Overlay */}
       <div
-        ref={overlayRef}
-        className="fixed inset-0 z-[9999] bg-navy pointer-events-none origin-top"
-        style={{ transform: "scaleY(1)" }}
-      />
-      {children}
+        ref={wipeRef}
+        className="fixed inset-0 z-[9999] bg-navy-deep pointer-events-none flex items-center justify-center"
+      >
+        <div className="flex flex-col items-center gap-4">
+          <div className="font-display text-gold text-4xl italic tracking-widest opacity-20 animate-pulse">RS</div>
+          <div className="w-48 h-[1px] bg-gold/20 relative overflow-hidden">
+             <div className="absolute inset-0 bg-gold origin-left animate-progress-fast" />
+          </div>
+        </div>
+      </div>
+      
+      <div ref={contentRef}>
+        {children}
+      </div>
     </div>
   );
 }

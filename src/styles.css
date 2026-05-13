@@ -180,10 +180,23 @@
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
-    opacity: 0.04;
+    opacity: 0.05;
     pointer-events: none;
     z-index: 9999;
     background-image: var(--noise);
+    filter: contrast(120%) brightness(100%);
+  }
+
+  .grid-lines {
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+    background-size: 10vw 10vh;
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 0;
   }
 
   .perspective-container {
@@ -198,6 +211,15 @@
   .isometric-card:hover {
     transform: rotateX(0deg) rotateZ(0deg) translateZ(20px);
   }
+}
+
+@keyframes progress-fast {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-progress-fast {
+  animation: progress-fast 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
 /* Custom Scrollbar */

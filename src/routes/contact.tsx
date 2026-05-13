@@ -99,12 +99,12 @@ function ContactPage() {
 
             <div className="grid sm:grid-cols-2 gap-4 info-grid">
               {[
-                { icon: Phone, label: "Direct Call", val: "+91 98765 43210", href: "tel:+919876543210" },
-                { icon: MessageCircle, label: "WhatsApp", val: "Chat with us", href: "https://wa.me/919876543210" },
-                { icon: Mail, label: "Inquiries", val: "hello@rsgroupevents.com", href: "mailto:hello@rsgroupevents.com" },
+                { icon: Phone, label: "Direct Call", val: "+91 99535 95353", href: "tel:+919953595353" },
+                { icon: MessageCircle, label: "WhatsApp", val: "Chat with us", href: "https://wa.me/919953595353" },
+                { icon: Mail, label: "Inquiries", val: "sanjeev@rsgroupevent.com", href: "mailto:sanjeev@rsgroupevent.com" },
+                { icon: Mail, label: "General", val: "hello@rsgroupevent.com", href: "mailto:hello@rsgroupevent.com" },
                 { icon: MapPin, label: "The Studio", val: "Surajkund, Faridabad" },
                 { icon: Clock, label: "Studio Hours", val: "Mon–Sat · 10am – 7pm" },
-                { icon: MapPin, label: "Service Area", val: "Across Delhi NCR" },
               ].map((c) => (
                 <a 
                   key={c.label} 

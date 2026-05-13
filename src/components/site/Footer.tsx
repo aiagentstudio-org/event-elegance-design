@@ -33,8 +33,9 @@ export function Footer() {
         <div>
           <h4 className="text-gold text-sm uppercase tracking-[0.25em] mb-4">Contact</h4>
           <ul className="space-y-3 text-sm">
-            <li className="flex gap-2"><Phone size={16} className="text-gold mt-0.5" /> +91 98765 43210</li>
-            <li className="flex gap-2"><Mail size={16} className="text-gold mt-0.5" /> hello@rsgroupevents.com</li>
+            <li className="flex gap-2"><Phone size={16} className="text-gold mt-0.5" /> +91 99535 95353</li>
+            <li className="flex gap-2"><Mail size={16} className="text-gold mt-0.5" /> sanjeev@rsgroupevent.com</li>
+            <li className="flex gap-2"><Mail size={16} className="text-gold mt-0.5" /> hello@rsgroupevent.com</li>
             <li className="flex gap-2"><MapPin size={16} className="text-gold mt-0.5" /> Surajkund, Faridabad, Delhi NCR</li>
           </ul>
         </div>
@@ -58,7 +59,7 @@ export function Footer() {
 
       {/* WhatsApp float */}
       <a
-        href="https://wa.me/919876543210"
+        href="https://wa.me/919953595353"
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp us"

@@ -154,6 +154,34 @@ function AboutPage() {
           </div>
         </section>
 
+        {/* VISION BENTO - STUDIO BRUTALIST */}
+        <section className="bg-ivory py-32 md:py-56 border-t border-charcoal/5 relative overflow-hidden" data-animate>
+          <div className="container-luxe">
+            <div className="grid lg:grid-cols-12 gap-12">
+               <div className="lg:col-span-5">
+                  <div className="gold-divider !justify-start mb-8"><span className="eyebrow">The Vision</span></div>
+                  <h2 className="font-display text-6xl md:text-8xl text-navy leading-[0.9] tracking-tighter mb-10">
+                    Boutique <br />
+                    <span className="italic text-gold">by Choice.</span>
+                  </h2>
+               </div>
+               <div className="lg:col-span-7 grid md:grid-cols-2 gap-8">
+                  <div className="bg-navy p-10 text-white rounded-tr-[4rem] group hover:bg-navy-deep transition-all">
+                     <div className="text-gold mb-6 font-display text-4xl">01.</div>
+                     <h3 className="text-2xl font-display mb-4">Precision Logic</h3>
+                     <p className="text-white/50 font-light leading-relaxed">We apply architectural rigor to logistics, ensuring every second of your event is accounted for.</p>
+                  </div>
+                  <div className="bg-white p-10 border border-charcoal/10 group hover:border-gold transition-all">
+                     <div className="text-navy mb-6 font-display text-4xl">02.</div>
+                     <h3 className="text-2xl font-display mb-4 text-navy">Emotional Design</h3>
+                     <p className="text-charcoal/50 font-light leading-relaxed">Design is a feeling. We manipulate textures and colors to evoke specific emotional responses.</p>
+                  </div>
+               </div>
+            </div>
+          </div>
+          <div className="decorative-text -bottom-10 -right-20 opacity-[0.02] -rotate-12">STUDIO</div>
+        </section>
+
         <section className="relative py-24 md:py-40 overflow-hidden" data-animate>
           <div className="absolute inset-0 bg-navy-deep -skew-y-3 origin-right scale-110" />
           <div className="container-luxe relative grid md:grid-cols-2 gap-8">
