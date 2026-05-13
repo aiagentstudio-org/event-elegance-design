@@ -3,6 +3,11 @@ import { Layout } from "@/components/site/Layout";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { CtaButton } from "@/components/site/CtaButton";
 import { Crown, Sparkles, MapPin, Heart, Briefcase, PartyPopper, Star, Quote } from "lucide-react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SplitType from "split-type";
+
 import heroImg from "@/assets/hero-wedding.jpg";
 import weddingDecor from "@/assets/wedding-decor.jpg";
 import corporate from "@/assets/corporate-event.jpg";
@@ -38,13 +43,6 @@ const services = [
   { icon: PartyPopper, title: "Private Celebrations", desc: "Birthdays, anniversaries and festive parties styled with elegance." },
 ];
 
-const why = [
-  { icon: Crown, title: "Luxury Experience", desc: "Five-star hospitality woven through every detail." },
-  { icon: Sparkles, title: "Custom Decor", desc: "Original concepts — never templated, always tailored." },
-  { icon: MapPin, title: "Delhi NCR Experts", desc: "Deep vendor and venue network across the region." },
-  { icon: Star, title: "End-to-End Planning", desc: "From first idea to final farewell, we handle it all." },
-];
-
 const testimonials = [
   { name: "Aanya & Rohan", event: "Wedding · Surajkund", quote: "RS Group turned our wedding into a dream. Every detail, from the floral mandap to the guest experience, was flawless." },
   { name: "Karan Mehta", event: "Corporate Gala · Gurgaon", quote: "Professional, creative and remarkably calm under pressure. Our launch event was the talk of the industry." },
@@ -54,165 +52,227 @@ const testimonials = [
 const galleryImgs = [g1, g2, g3, g4, weddingDecor, corporate];
 
 function HomePage() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    const ctx = gsap.context(() => {
+      // Hero Animation
+      const heroTitle = new SplitType(".hero-title", { types: "lines,words" });
+      gsap.from(heroTitle.words, {
+        y: 60,
+        opacity: 0,
+        rotateX: -30,
+        stagger: 0.05,
+        duration: 1.2,
+        ease: "power4.out",
+        delay: 0.4
+      });
+
+      gsap.from(".hero-sub", {
+        opacity: 0,
+        y: 20,
+        duration: 1,
+        ease: "power2.out",
+        delay: 1.2
+      });
+
+      gsap.from(".hero-cta", {
+        opacity: 0,
+        y: 20,
+        duration: 1,
+        ease: "power2.out",
+        delay: 1.4
+      });
+
+      // Stats Counting Effect (Simplified)
+      gsap.from(".stat-item", {
+        scrollTrigger: {
+          trigger: ".stats-section",
+          start: "top 85%",
+        },
+        opacity: 0,
+        y: 40,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: "power3.out"
+      });
+
+      // Section Reveals
+      const revealSections = document.querySelectorAll("[data-animate]");
+      revealSections.forEach((section) => {
+        gsap.from(section, {
+          scrollTrigger: {
+            trigger: section,
+            start: "top 85%",
+          },
+          y: 60,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out"
+        });
+      });
+
+      // Parallax on Gallery
+      const galleryItems = document.querySelectorAll(".gallery-item");
+      galleryItems.forEach((item) => {
+        gsap.to(item.querySelector("img"), {
+          scrollTrigger: {
+            trigger: item,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true
+          },
+          y: -60,
+          ease: "none"
+        });
+      });
+
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <Layout>
-      {/* HERO */}
-      <section className="relative isolate overflow-hidden -mt-20">
-        <img src={heroImg} alt="Luxury wedding stage" className="absolute inset-0 h-full w-full object-cover" width={1920} height={1080} />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-deep/85 via-navy-deep/60 to-navy-deep/95" />
-        <div className="relative container-luxe min-h-[100vh] flex flex-col justify-center pt-24 pb-20 text-center">
-          <div className="gold-divider mx-auto mb-6"><span className="eyebrow">Luxury Event Planners · Delhi NCR</span></div>
-          <h1 className="font-display text-5xl md:text-7xl text-ivory leading-[1.05] max-w-5xl mx-auto">
-            Crafting Memories <br className="hidden md:block" />
-            <span className="italic text-gold">that last a lifetime.</span>
-          </h1>
-          <p className="mt-6 max-w-2xl mx-auto text-ivory/85 text-lg">
-            Bespoke weddings, corporate galas and private celebrations — designed in exquisite detail across Surajkund and Delhi NCR.
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
-            <CtaButton to="/contact" variant="gold">Book Consultation</CtaButton>
-            <CtaButton to="/services" variant="outline">View Services</CtaButton>
-          </div>
-        </div>
-      </section>
-
-      {/* STATS */}
-      <section className="bg-navy text-ivory">
-        <div className="container-luxe py-14 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          {stats.map((s) => (
-            <div key={s.l}>
-              <div className="font-display text-4xl md:text-5xl text-gold">{s.n}</div>
-              <div className="mt-2 text-xs uppercase tracking-[0.25em] text-ivory/75">{s.l}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* WHAT WE DO */}
-      <section className="container-luxe py-20 md:py-28">
-        <SectionHeading eyebrow="What We Do" title="Three pillars of impeccable event design" subtitle="Every celebration is unique — and so is our approach." />
-        <div className="mt-14 grid md:grid-cols-3 gap-6">
-          {services.map((s) => (
-            <div key={s.title} className="group bg-card p-8 border border-border hover:border-gold transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-luxe)]">
-              <div className="h-14 w-14 rounded-sm bg-pale-gold flex items-center justify-center mb-5 group-hover:bg-gold transition-colors">
-                <s.icon className="text-navy" size={26} />
-              </div>
-              <h3 className="text-2xl text-navy">{s.title}</h3>
-              <p className="mt-2 text-charcoal/75 text-sm leading-relaxed">{s.desc}</p>
-              <Link to="/services" className="mt-5 inline-block text-sm uppercase tracking-[0.2em] text-gold hover:text-navy">Discover →</Link>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ABOUT SNAPSHOT */}
-      <section className="bg-pale-gold/40">
-        <div className="container-luxe py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
-          <div className="relative">
-            <img src={about} alt="RS Group Events team" className="w-full h-[480px] object-cover" loading="lazy" />
-            <div className="absolute -bottom-6 -right-6 hidden md:block bg-gold text-navy p-6 max-w-[200px]">
-              <div className="font-display text-3xl">12+</div>
-              <div className="text-xs uppercase tracking-[0.2em]">Years of crafting unforgettable moments</div>
-            </div>
-          </div>
-          <div>
-            <div className="gold-divider mb-4 !justify-start"><span className="eyebrow">About RS Group</span></div>
-            <h2 className="font-display text-4xl md:text-5xl text-navy">Where every detail tells a story.</h2>
-            <p className="mt-5 text-charcoal/80 leading-relaxed">
-              From a passion for celebration grew RS Group Events — a boutique studio for couples, families and brands who want more than an event. We design experiences. Each setup is hand-curated, each timeline meticulously planned, each guest moment considered.
+      <div ref={containerRef}>
+        {/* HERO */}
+        <section className="relative isolate overflow-hidden -mt-20">
+          <img src={heroImg} alt="Luxury wedding stage" className="absolute inset-0 h-full w-full object-cover" width={1920} height={1080} />
+          <div className="absolute inset-0 bg-gradient-to-b from-navy-deep/90 via-navy-deep/50 to-navy-deep/95" />
+          <div className="relative container-luxe min-h-[100vh] flex flex-col justify-center pt-24 pb-20 text-center">
+            <div className="gold-divider mx-auto mb-6"><span className="eyebrow">The Silent Architect of Grandeur</span></div>
+            <h1 className="hero-title font-display text-5xl md:text-9xl text-ivory leading-[1.05] max-w-6xl mx-auto">
+              Crafting Memories <br />
+              <span className="italic text-gold">that last a lifetime.</span>
+            </h1>
+            <p className="hero-sub mt-8 max-w-2xl mx-auto text-ivory/80 text-lg md:text-xl font-light">
+              Bespoke weddings, corporate galas and private celebrations — designed in exquisite detail across Surajkund and Delhi NCR.
             </p>
-            <p className="mt-3 text-charcoal/80 leading-relaxed">
-              Based in Surajkund and serving all of Delhi NCR, we bring together the region's finest artisans, florists and venues — orchestrated by a team that loves what it does.
-            </p>
-            <div className="mt-8"><CtaButton to="/about" variant="navy">Our Story</CtaButton></div>
+            <div className="hero-cta mt-12 flex flex-wrap justify-center gap-4">
+              <CtaButton to="/contact" variant="gold" className="px-10 py-5">Book Consultation</CtaButton>
+              <CtaButton to="/gallery" variant="outline" className="px-10 py-5">View Portfolio</CtaButton>
+            </div>
           </div>
-        </div>
-      </section>
+          
+          {/* Scroll Indicator */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30 animate-pulse">
+            <div className="text-[10px] uppercase tracking-[0.4em] text-ivory">Scroll</div>
+            <div className="w-px h-12 bg-ivory" />
+          </div>
+        </section>
 
-      {/* GALLERY */}
-      <section className="container-luxe py-20 md:py-28">
-        <SectionHeading eyebrow="Featured Work" title="Moments we've created" subtitle="A glimpse of recent celebrations across Delhi NCR." />
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-          {galleryImgs.map((src, i) => (
-            <Link to="/gallery" key={i} className={`relative overflow-hidden group ${i === 0 ? "md:row-span-2 md:col-span-2 aspect-square md:aspect-auto" : "aspect-square"}`}>
-              <img src={src} alt="Event" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
-              <div className="absolute inset-0 bg-navy-deep/0 group-hover:bg-navy-deep/40 transition-colors flex items-end p-4">
-                <span className="text-ivory text-xs uppercase tracking-[0.25em] opacity-0 group-hover:opacity-100 transition-opacity">View Gallery</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-        <div className="mt-10 text-center"><CtaButton to="/gallery" variant="navy">See Full Gallery</CtaButton></div>
-      </section>
-
-      {/* WHY CHOOSE */}
-      <section className="bg-ivory">
-        <div className="container-luxe py-20 md:py-28">
-          <SectionHeading eyebrow="Why RS Group" title="Trusted across Delhi NCR" />
-          <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {why.map((w) => (
-              <div key={w.title} className="text-center p-6 border-t-2 border-gold bg-card hover:shadow-[var(--shadow-luxe)] transition-shadow">
-                <div className="mx-auto h-14 w-14 rounded-full bg-navy text-gold flex items-center justify-center mb-4">
-                  <w.icon size={24} />
-                </div>
-                <h3 className="text-xl text-navy">{w.title}</h3>
-                <p className="mt-2 text-sm text-charcoal/75">{w.desc}</p>
+        {/* STATS */}
+        <section className="bg-navy text-ivory relative z-10 stats-section border-y border-white/5">
+          <div className="container-luxe py-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {stats.map((s) => (
+              <div key={s.l} className="stat-item group">
+                <div className="font-display text-5xl md:text-7xl text-gold transition-transform duration-700 group-hover:scale-110">{s.n}</div>
+                <div className="mt-3 text-[10px] uppercase tracking-[0.3em] text-ivory/50 font-bold">{s.l}</div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* TESTIMONIALS */}
-      <section className="relative" style={{ background: "var(--gradient-navy)" }}>
-        <div className="container-luxe py-20 md:py-28">
-          <SectionHeading eyebrow="Kind Words" title="Loved by our clients" light />
-          <div className="mt-14 grid md:grid-cols-3 gap-6">
-            {testimonials.map((t) => (
-              <div key={t.name} className="border border-gold/30 p-8 bg-navy-deep/40 backdrop-blur">
-                <Quote className="text-gold" size={28} />
-                <p className="mt-4 text-ivory/90 leading-relaxed italic font-display text-lg">"{t.quote}"</p>
-                <div className="mt-6 flex items-center gap-1 text-gold">
-                  {Array.from({ length: 5 }).map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
+        {/* WHAT WE DO */}
+        <section className="container-luxe py-20 md:py-32" data-animate>
+          <SectionHeading eyebrow="Our Core" title="Bespoke Event Architecture" subtitle="We specialize in events that demand perfection, creativity, and flawless execution." />
+          <div className="mt-16 grid md:grid-cols-3 gap-8">
+            {services.map((s) => (
+              <div key={s.title} className="group glass-card p-10 border border-white/5 hover:border-gold transition-all duration-1000 hover:-translate-y-4">
+                <div className="h-16 w-16 rounded-full bg-gold/10 flex items-center justify-center mb-8 group-hover:bg-gold transition-colors duration-700">
+                  <s.icon className="text-gold group-hover:text-navy" size={30} />
                 </div>
-                <div className="mt-3">
-                  <div className="text-ivory text-sm font-medium">{t.name}</div>
-                  <div className="text-ivory/60 text-xs uppercase tracking-[0.2em]">{t.event}</div>
-                </div>
+                <h3 className="text-3xl font-display text-navy">{s.title}</h3>
+                <p className="mt-6 text-charcoal/70 text-sm leading-relaxed">{s.desc}</p>
+                <div className="h-px w-12 bg-gold/30 mt-8 mb-4 group-hover:w-full transition-all duration-700" />
+                <Link to="/services" className="inline-block text-[10px] uppercase tracking-[0.4em] text-gold font-bold">Discover More</Link>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* INSTAGRAM */}
-      <section className="bg-navy-deep text-ivory py-20">
-        <div className="container-luxe text-center">
-          <div className="gold-divider mx-auto mb-4"><span className="eyebrow">Instagram</span></div>
-          <h2 className="font-display text-3xl md:text-4xl text-ivory">Follow our work <span className="text-gold">@rsgroupevents</span></h2>
-          <p className="mt-3 text-ivory/70">Real events, real decor, real moments.</p>
-          <div className="mt-10 grid grid-cols-3 md:grid-cols-6 gap-2">
-            {galleryImgs.concat(galleryImgs).slice(0, 6).map((src, i) => (
-              <a key={i} href="https://instagram.com" target="_blank" rel="noreferrer" className="aspect-square overflow-hidden group">
-                <img src={src} alt="Instagram post" className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
-              </a>
+        {/* ABOUT SNAPSHOT */}
+        <section className="bg-pale-gold/20 overflow-hidden" data-animate>
+          <div className="container-luxe py-20 md:py-32 grid md:grid-cols-2 gap-20 items-center">
+            <div className="relative perspective-container">
+              <div className="isometric-card glass-card p-3">
+                <img src={about} alt="RS Group Events team" className="w-full h-[600px] object-cover" loading="lazy" />
+              </div>
+              <div className="absolute -bottom-10 -right-10 hidden lg:block bg-navy text-ivory p-10 max-w-[260px] glass-card border-gold/20 shadow-2xl z-20">
+                <div className="font-display text-6xl text-gold">12+</div>
+                <div className="text-[10px] uppercase tracking-[0.2em] mt-3 font-bold text-ivory/60">Years of Masterful Craftsmanship</div>
+              </div>
+            </div>
+            <div>
+              <div className="gold-divider mb-8 !justify-start"><span className="eyebrow">The Studio</span></div>
+              <h2 className="font-display text-5xl md:text-7xl text-navy leading-[1.1]">Where every detail <br/> becomes a legacy.</h2>
+              <p className="mt-10 text-lg text-charcoal/70 leading-relaxed font-light">
+                Founded on the principles of architectural precision and artistic flair, RS Group Events is a boutique production studio. We don't just plan; we curate. Every texture, every lighting cue, and every guest interaction is designed to evoke a sense of wonder.
+              </p>
+              <div className="mt-12"><CtaButton to="/about" variant="navy" className="px-12">Our Story</CtaButton></div>
+            </div>
+          </div>
+        </section>
+
+        {/* GALLERY */}
+        <section className="container-luxe py-20 md:py-32" data-animate>
+          <SectionHeading eyebrow="The Portfolio" title="Exquisite Moments" subtitle="A collection of recent celebrations that define our signature aesthetic." />
+          <div className="mt-20 grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+            {galleryImgs.map((src, i) => (
+              <Link to="/gallery" key={i} className={`relative overflow-hidden group gallery-item glass-card p-1 ${i === 0 ? "md:row-span-2 md:col-span-2 aspect-square md:aspect-auto" : "aspect-[4/5]"}`}>
+                <div className="h-full w-full overflow-hidden">
+                  <img src={src} alt="Event" className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" loading="lazy" />
+                </div>
+                <div className="absolute inset-0 bg-navy-deep/0 group-hover:bg-navy-deep/80 transition-all duration-700 flex flex-col items-center justify-center p-8 text-center">
+                  <span className="text-gold text-[10px] uppercase tracking-[0.4em] opacity-0 group-hover:opacity-100 transition-all duration-700 -translate-y-4 group-hover:translate-y-0">View Case Study</span>
+                  <div className="h-px w-0 bg-gold/50 mt-4 group-hover:w-16 transition-all duration-700" />
+                </div>
+              </Link>
             ))}
           </div>
-          <div className="mt-10"><CtaButton href="https://instagram.com" variant="outline">Follow on Instagram</CtaButton></div>
-        </div>
-      </section>
+          <div className="mt-20 text-center"><CtaButton to="/gallery" variant="navy" className="px-14">Explore Full Portfolio</CtaButton></div>
+        </section>
 
-      {/* CTA BANNER */}
-      <section className="bg-gold">
-        <div className="container-luxe py-16 text-center">
-          <h2 className="font-display text-3xl md:text-5xl text-navy">Planning an event in Delhi NCR? Let's talk.</h2>
-          <p className="mt-3 text-navy/80">We'll respond within 24 hours.</p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <CtaButton href="tel:+919876543210" variant="navy">Call Now</CtaButton>
-            <CtaButton to="/contact" variant="navy" className="!bg-navy-deep">Send Enquiry</CtaButton>
+        {/* TESTIMONIALS */}
+        <section className="relative overflow-hidden bg-navy-deep" data-animate>
+          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+          <div className="container-luxe py-20 md:py-32 relative z-10">
+            <SectionHeading eyebrow="Client Voice" title="Testimonials of Excellence" light />
+            <div className="mt-20 grid md:grid-cols-3 gap-10">
+              {testimonials.map((t) => (
+                <div key={t.name} className="glass-card border-white/5 p-12 hover:border-gold/30 transition-all duration-700 relative">
+                  <Quote className="text-gold opacity-20 absolute top-8 right-8" size={48} />
+                  <p className="text-ivory/80 leading-relaxed italic font-display text-2xl">"{t.quote}"</p>
+                  <div className="mt-10 flex items-center gap-1 text-gold">
+                    {Array.from({ length: 5 }).map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
+                  </div>
+                  <div className="mt-6">
+                    <div className="text-ivory text-sm font-bold tracking-widest">{t.name}</div>
+                    <div className="text-gold/40 text-[9px] uppercase tracking-[0.4em] mt-2">{t.event}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* CTA BANNER */}
+        <section className="bg-gold relative overflow-hidden" data-animate>
+          <div className="container-luxe py-28 text-center relative z-10">
+            <h2 className="font-display text-5xl md:text-8xl text-navy leading-tight">Let's craft your <br/> next masterpiece.</h2>
+            <p className="mt-8 text-navy/70 text-lg md:text-xl font-light">Available for exclusive bookings across Delhi NCR and destination weddings.</p>
+            <div className="mt-14 flex flex-wrap justify-center gap-6">
+              <CtaButton href="tel:+919876543210" variant="navy" className="px-12 py-5 shadow-2xl">Call Representative</CtaButton>
+              <CtaButton to="/contact" variant="navy" className="!bg-navy-deep px-12 py-5 shadow-2xl">Send Inquiry</CtaButton>
+            </div>
+          </div>
+          <div className="absolute top-0 right-0 h-full w-1/3 bg-white/5 -skew-x-12 translate-x-32" />
+          <div className="absolute bottom-0 left-0 h-1/2 w-1/4 bg-navy/5 skew-x-12 -translate-x-20" />
+        </section>
+      </div>
     </Layout>
   );
 }
+

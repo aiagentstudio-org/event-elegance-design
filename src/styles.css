@@ -78,6 +78,11 @@
   --gradient-gold: linear-gradient(135deg, var(--gold), var(--gold-light));
   --shadow-luxe: 0 20px 60px -20px color-mix(in oklab, var(--navy) 35%, transparent);
   --shadow-gold: 0 12px 32px -12px color-mix(in oklab, var(--gold) 50%, transparent);
+  
+  /* Antigravity Tokens */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --noise: url("https://grainy-gradients.vercel.app/noise.svg");
 }
 
 .dark {
@@ -88,6 +93,8 @@
   --primary: var(--gold);
   --primary-foreground: var(--navy);
   --border: oklch(1 0 0 / 12%);
+  --glass-bg: rgba(27, 43, 107, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.08);
 }
 
 @layer base {
@@ -97,11 +104,26 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-weight: 400;
+    overflow-x: hidden;
   }
   h1, h2, h3, h4, h5 {
     font-family: var(--font-display);
     font-weight: 600;
     letter-spacing: -0.01em;
+  }
+  
+  /* Smooth scroll support */
+  html.lenis {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
   }
 }
 
@@ -121,4 +143,50 @@
   .gold-divider::before, .gold-divider::after {
     content: ""; height: 1px; width: 2.5rem; background: var(--gold);
   }
+
+  /* Antigravity Components */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    @apply shadow-2xl;
+  }
+
+  .noise-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: var(--noise);
+  }
+
+  .perspective-container {
+    perspective: 1200px;
+  }
+
+  .isometric-card {
+    transform: rotateX(15deg) rotateZ(-10deg);
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .isometric-card:hover {
+    transform: rotateX(0deg) rotateZ(0deg) translateZ(20px);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--navy-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-light);
 }

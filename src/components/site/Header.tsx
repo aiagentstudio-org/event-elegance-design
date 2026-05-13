@@ -6,6 +6,7 @@ import { Logo } from "./Logo";
 const NAV = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
+  { to: "/team", label: "Team" },
   { to: "/services", label: "Services" },
   { to: "/venue-events", label: "Venue & Events" },
   { to: "/gallery", label: "Gallery" },
@@ -25,18 +26,18 @@ export function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-navy/95 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
-          : "bg-navy/80 backdrop-blur-sm"
+          ? "bg-navy/90 backdrop-blur-xl border-b border-white/5 py-1 shadow-2xl"
+          : "bg-transparent py-3"
       }`}
     >
-      <div className="container-luxe flex items-center justify-between py-3">
+      <div className="container-luxe flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 group">
-          <Logo className="h-12 w-12 transition-transform group-hover:scale-105" />
+          <Logo className="h-12 w-12 transition-transform duration-700 group-hover:rotate-[15deg]" />
           <div className="hidden sm:block leading-tight">
-            <div className="font-display text-lg font-semibold text-ivory tracking-wide">RS Group</div>
-            <div className="text-[10px] uppercase tracking-[0.3em] text-gold">Events</div>
+            <div className="font-display text-xl font-semibold text-ivory tracking-wide">RS Group</div>
+            <div className="text-[10px] uppercase tracking-[0.4em] text-gold">Artisans of Events</div>
           </div>
         </Link>
 
@@ -45,21 +46,22 @@ export function Header() {
             <Link
               key={n.to}
               to={n.to}
-              className="text-sm text-ivory/85 hover:text-gold transition-colors"
+              className="text-xs uppercase tracking-widest text-ivory/80 hover:text-gold transition-all duration-300 relative group"
               activeProps={{ className: "text-gold" }}
               activeOptions={{ exact: n.to === "/" }}
             >
               {n.label}
+              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <Link
             to="/contact"
-            className="hidden md:inline-flex items-center justify-center rounded-sm bg-gold px-5 py-2.5 text-sm font-medium text-navy hover:bg-gold-light transition-colors shadow-[var(--shadow-gold)]"
+            className="hidden md:inline-flex items-center justify-center rounded-sm bg-gold px-6 py-2.5 text-[11px] uppercase tracking-[0.2em] font-bold text-navy hover:bg-ivory hover:text-navy transition-all duration-500 shadow-[var(--shadow-gold)]"
           >
-            Book Now
+            Inquire
           </Link>
           <button
             className="lg:hidden p-2 text-ivory"
@@ -72,14 +74,14 @@ export function Header() {
       </div>
 
       {open && (
-        <div className="lg:hidden bg-navy-deep border-t border-gold/20">
-          <nav className="container-luxe flex flex-col py-4">
+        <div className="lg:hidden bg-navy-deep/95 backdrop-blur-2xl border-t border-gold/20 h-screen overflow-hidden">
+          <nav className="container-luxe flex flex-col py-10 gap-2">
             {NAV.map((n) => (
               <Link
                 key={n.to}
                 to={n.to}
                 onClick={() => setOpen(false)}
-                className="py-3 text-ivory/90 hover:text-gold border-b border-ivory/10 last:border-0"
+                className="py-4 text-2xl font-display text-ivory/90 hover:text-gold border-b border-white/5"
                 activeProps={{ className: "text-gold" }}
                 activeOptions={{ exact: n.to === "/" }}
               >
