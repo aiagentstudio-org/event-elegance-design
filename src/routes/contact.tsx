@@ -40,7 +40,7 @@ const submitInquiry = createServerFn({ method: "POST" })
       // 1. Send inquiry notification to RS Group
       const adminEmail = await resend.emails.send({
         from: "RS Group Inquiries <hello@rsgroupevent.com>",
-        to: ["hello@rsgroupevent.com"],
+        to: ["sanjeev@rsgroupevent.com"],
         subject: `New Event Inquiry: ${event} — ${name}`,
         html: `
           <div style="font-family: sans-serif; padding: 20px; color: #1a1a1a;">
@@ -62,7 +62,7 @@ const submitInquiry = createServerFn({ method: "POST" })
 
       // 2. Send "Thank You" confirmation to the sender
       const userEmail = await resend.emails.send({
-        from: "RS Group Events <hello@rsgroupevent.com>",
+        from: "RS Group Events <Bookings@rsgroupevent.com>",
         to: [email],
         subject: `Namaste — We've received your inquiry`,
         html: `
@@ -194,9 +194,9 @@ function ContactPage() {
                 { icon: MapPin, label: "The Studio", val: "Taj Hotel, Surajkund" },
                 { icon: Clock, label: "Studio Hours", val: "Mon–Sat · 10am – 7pm" },
               ].map((c) => (
-                <a 
-                  key={c.label} 
-                  href={c.href ?? "#"} 
+                <a
+                  key={c.label}
+                  href={c.href ?? "#"}
                   className="info-card group bg-navy-deep border border-white/5 p-8 hover:border-gold/50 transition-all duration-500 hover:-translate-y-2 block relative overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 w-24 h-24 bg-gold/5 rounded-full translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-1000" />
@@ -212,9 +212,9 @@ function ContactPage() {
           <div className="lg:col-span-3">
             <div className="contact-form bg-card border border-border/50 p-8 md:p-12 shadow-[var(--shadow-luxe)] glass-card relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-              
+
               <h3 className="font-display text-3xl text-text-main mb-8">Event Inquiry</h3>
-              
+
               {sent ? (
                 <div className="success-message py-12 text-center">
                   <div className="h-20 w-20 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -246,16 +246,16 @@ function ContactPage() {
                   <div className="sm:col-span-2 form-field"><Field label="Venue Location" name="location" placeholder="e.g., ITC Grand Bharat, Manesar" /></div>
                   <div className="sm:col-span-2 form-field">
                     <label className="block text-[10px] uppercase tracking-[0.2em] text-text-muted mb-2 font-bold italic">Tell us about your vision</label>
-                    <textarea 
-                      name="message" 
-                      rows={4} 
-                      className="w-full bg-transparent border-b border-input py-3 text-sm text-text-main focus:outline-none focus:border-gold transition-colors resize-none placeholder:text-text-muted/40" 
-                      placeholder="Share any specific themes, traditions, or inspirations..." 
+                    <textarea
+                      name="message"
+                      rows={4}
+                      className="w-full bg-transparent border-b border-input py-3 text-sm text-text-main focus:outline-none focus:border-gold transition-colors resize-none placeholder:text-text-muted/40"
+                      placeholder="Share any specific themes, traditions, or inspirations..."
                     />
                   </div>
                   <div className="sm:col-span-2 pt-4 form-field">
-                    <button 
-                      type="submit" 
+                    <button
+                      type="submit"
                       disabled={loading}
                       className="group w-full bg-gold text-bg-main py-5 text-xs uppercase tracking-[0.3em] font-bold hover:bg-gold-light hover:text-bg-main transition-all duration-500 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
