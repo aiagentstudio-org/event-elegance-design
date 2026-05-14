@@ -8,12 +8,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/dist/server/server.js"
+      "destination": "/api/index"
     }
-  ],
-  "functions": {
-    "dist/server/server.js": {
-      "runtime": "edge"
-    }
-  }
+  ]
 }
