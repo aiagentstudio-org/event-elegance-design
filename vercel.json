@@ -1,15 +1,19 @@
 {
   "version": 2,
-  "framework": "vite",
+  "cleanUrls": true,
   "rewrites": [
     {
       "source": "/assets/(.*)",
-      "destination": "/assets/$1"
+      "destination": "/dist/client/assets/$1"
     },
     {
       "source": "/(.*)",
-      "destination": "/"
+      "destination": "/dist/server/server.js"
     }
   ],
-  "cleanUrls": true
+  "functions": {
+    "dist/server/server.js": {
+      "runtime": "edge"
+    }
+  }
 }
