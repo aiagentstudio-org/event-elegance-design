@@ -14,6 +14,16 @@ import wedding from "@/assets/wedding-decor.jpg";
 import corporate from "@/assets/corporate-event.jpg";
 import privateImg from "@/assets/private-celebration.jpg";
 import hero from "@/assets/hero-wedding.jpg";
+import v6 from "@/assets/gallery-6.MOV";
+import v7 from "@/assets/gallery-7.MOV";
+import v9 from "@/assets/gallery-9.MOV";
+import v12 from "@/assets/gallery-12.MOV";
+import g5 from "@/assets/gallery-5.jpg";
+import v13 from "@/assets/gallery-13.MOV";
+import v14 from "@/assets/gallery-14.MOV";
+import v15 from "@/assets/gallery-15.MOV";
+import v16 from "@/assets/gallery-16.MOV";
+import v17 from "@/assets/gallery-17.MOV";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -33,19 +43,25 @@ export const Route = createFileRoute("/gallery")({
 });
 
 type Cat = "All" | "Weddings" | "Corporate" | "Decoration" | "Private";
-const items: { src: string; cat: Exclude<Cat, "All">; label: string }[] = [
+const items: { src: string; cat: Exclude<Cat, "All">; label: string; type?: "video" | "image" }[] = [
   { src: g1, cat: "Decoration", label: "Floral Aisle" },
+  { src: v12, cat: "Weddings", label: "Royal Entrance", type: "video" },
   { src: hero, cat: "Weddings", label: "Royal Mandap" },
+  { src: v6, cat: "Weddings", label: "Cinematic Ceremony", type: "video" },
+  { src: g2, cat: "Decoration", label: "Table Detail" },
+  { src: v7, cat: "Corporate", label: "Event Highlights", type: "video" },
+  { src: g3, cat: "Decoration", label: "Luxe Decor" },
+  { src: v9, cat: "Weddings", label: "Celebration", type: "video" },
+  { src: g4, cat: "Weddings", label: "Grand Ballroom" },
+  { src: g5, cat: "Weddings", label: "Bespoke Styling" },
+  { src: v13, cat: "Decoration", label: "Atmosphere", type: "video" },
+  { src: v14, cat: "Weddings", label: "The Vow", type: "video" },
+  { src: v15, cat: "Corporate", label: "Brand Story", type: "video" },
+  { src: v16, cat: "Weddings", label: "Celebration", type: "video" },
+  { src: v17, cat: "Decoration", label: "Grand Entrance", type: "video" },
+  { src: privateImg, cat: "Weddings", label: "Evening Setup" },
   { src: wedding, cat: "Weddings", label: "Sangeet Stage" },
-  { src: corporate, cat: "Corporate", label: "Annual Gala" },
-  { src: g2, cat: "Weddings", label: "Garden Ceremony" },
-  { src: g3, cat: "Decoration", label: "Table Styling" },
-  { src: privateImg, cat: "Private", label: "Birthday Suite" },
-  { src: g4, cat: "Decoration", label: "Ballroom Drape" },
-  { src: g1, cat: "Weddings", label: "Reception Entrance" },
-  { src: corporate, cat: "Corporate", label: "Award Night" },
-  { src: wedding, cat: "Weddings", label: "Floral Mandap" },
-  { src: g3, cat: "Decoration", label: "Royal Tablescape" },
+  { src: corporate, cat: "Corporate", label: "Annual Gala" }
 ];
 
 const tabs: Cat[] = ["All", "Weddings", "Corporate", "Decoration", "Private"];
@@ -61,17 +77,6 @@ function GalleryPage() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Hero Title Animation
-      const heroTitle = new SplitType(".hero-title", { types: "chars,words" });
-      gsap.from(heroTitle.chars, {
-        y: 60,
-        opacity: 0,
-        rotateX: -45,
-        stagger: 0.02,
-        duration: 1.2,
-        ease: "power4.out"
-      });
-
       // Initial reveal
       gsap.from(".gallery-item", {
         y: 60,
@@ -124,8 +129,14 @@ function GalleryPage() {
           subtitle="A curated collection from celebrations across Delhi NCR."
           image={g4}
         />
+        {/* SEO Intro */}
+        <section className="container-luxe pt-16 pb-8">
+          <p className="text-text-muted text-lg leading-relaxed max-w-3xl mx-auto text-center font-light">
+            Explore our portfolio of luxury weddings, corporate galas, bespoke floral installations, and private celebrations across Delhi NCR. Each event is designed with architectural precision and creative artistry by the RS Group Events team.
+          </p>
+        </section>
 
-        <section className="sticky top-[72px] z-30 bg-ivory/95 backdrop-blur-xl border-b border-border/10">
+        <section className="sticky top-[72px] z-30 bg-bg-main/95 backdrop-blur-xl border-b border-border/10">
           <div className="container-luxe py-8 overflow-x-auto no-scrollbar">
             <div className="flex justify-center gap-6 min-w-max">
               {tabs.map((t) => (
@@ -134,8 +145,8 @@ function GalleryPage() {
                   onClick={() => setActive(t)}
                   className={`relative px-10 py-4 text-[11px] uppercase tracking-[0.4em] font-bold transition-all duration-700 ${
                     active === t
-                      ? "text-navy-deep scale-110"
-                      : "text-charcoal/40 hover:text-gold"
+                      ? "text-gold scale-110"
+                      : "text-text-muted/60 hover:text-gold"
                   }`}
                 >
                   {t}
@@ -165,12 +176,23 @@ function GalleryPage() {
                     "md:col-span-4 aspect-square"
                   }`}
                 >
-                  <img
-                    src={it.src}
-                    alt={it.label}
-                    className="gallery-img h-[130%] w-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                    loading="lazy"
-                  />
+                  {it.type === "video" ? (
+                    <video
+                      src={it.src}
+                      className="gallery-img h-[130%] w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    />
+                  ) : (
+                    <img
+                      src={it.src}
+                      alt={it.label}
+                      className="gallery-img h-[130%] w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-navy-deep/40 opacity-0 group-hover:opacity-100 transition-all duration-700 flex flex-col justify-end p-10 backdrop-blur-[2px]">
                     <div className="translate-y-8 group-hover:translate-y-0 transition-transform duration-700">
                       <div className="eyebrow text-gold mb-3 text-xs tracking-[0.3em]">{it.cat}</div>
@@ -196,37 +218,82 @@ function GalleryPage() {
               {items.slice(0, 6).map((it, i) => (
                 <a
                   key={i}
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/rsgroupdecors?igsh=dTFwYjVkbzJycnNi&utm_source=rsgroupevent.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="aspect-square overflow-hidden group border border-ivory/10"
+                  className="aspect-square overflow-hidden group border border-ivory/10 relative"
                 >
-                  <img
-                    src={it.src}
-                    alt=""
-                    className="h-full w-full object-cover group-hover:scale-110 grayscale group-hover:grayscale-0 transition-all duration-1000"
-                    loading="lazy"
-                  />
+                  {it.type === "video" ? (
+                    <video
+                      src={it.src}
+                      className="h-full w-full object-cover group-hover:scale-110 grayscale group-hover:grayscale-0 transition-all duration-1000"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    />
+                  ) : (
+                    <img
+                      src={it.src}
+                      alt=""
+                      className="h-full w-full object-cover group-hover:scale-110 grayscale group-hover:grayscale-0 transition-all duration-1000"
+                      loading="lazy"
+                    />
+                  )}
                 </a>
               ))}
             </div>
             <div className="mt-24">
-              <CtaButton href="https://instagram.com" variant="outline" className="px-16 py-6 border-gold/30 hover:border-gold scale-125">
+              <CtaButton href="https://www.instagram.com/rsgroupdecors?igsh=dTFwYjVkbzJycnNi&utm_source=rsgroupevent.com" variant="outline" className="px-16 py-6 border-gold/30 hover:border-gold scale-125">
                 Follow the Story
               </CtaButton>
             </div>
           </div>
         </section>
 
-        <section className="relative overflow-hidden" data-animate>
-          <div className="absolute inset-0 bg-gold/10" />
-          <div className="container-luxe py-32 md:py-48 text-center relative">
-            <h2 className="font-display text-5xl md:text-8xl text-navy-deep mb-16 leading-tight">
-              Love what you see?<br />Let's create <span className="italic">yours</span>.
+        {/* FINAL CTA - CINEMATIC & PREMIUM */}
+        <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-navy-deep" data-animate>
+          {/* Background Elements */}
+          <div className="absolute inset-0 z-0">
+            <video 
+              src={v17} 
+              autoPlay 
+              muted 
+              loop 
+              playsInline 
+              className="w-full h-full object-cover opacity-20 scale-110 blur-sm"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-navy-deep via-transparent to-navy-deep" />
+            <div className="absolute inset-0 bg-navy-deep/40" />
+          </div>
+
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center opacity-[0.03] select-none pointer-events-none z-0">
+            <div className="font-display text-[25vw] leading-none tracking-tighter italic">RS GROUP</div>
+          </div>
+
+          <div className="container-luxe relative z-10 text-center">
+            <div className="gold-divider mx-auto mb-10"><span className="eyebrow !text-gold/60">The Next Masterpiece</span></div>
+            <h2 className="font-display text-6xl md:text-[120px] text-ivory mb-16 leading-[0.85] tracking-tighter">
+              Love what you see?<br />
+              Let's create <span className="italic text-gold">yours.</span>
             </h2>
-            <CtaButton to="/contact" variant="navy" className="px-20 py-6 text-xl scale-110">
-              Start Planning
-            </CtaButton>
+            <p className="text-ivory/50 text-xl md:text-2xl font-light mb-16 max-w-2xl mx-auto leading-relaxed">
+              Every legacy begins with a single conversation. Our creative team is ready to bring your vision to life with architectural precision.
+            </p>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+              <CtaButton to="/contact" variant="gold" className="px-20 py-7 text-lg scale-110 shadow-[0_0_50px_rgba(212,175,55,0.2)]">
+                Start Planning
+              </CtaButton>
+              <CtaButton href="tel:+919953595353" variant="outline" className="px-16 py-7 text-lg border-white/20 text-white hover:border-gold">
+                Quick Call
+              </CtaButton>
+            </div>
+          </div>
+
+          {/* Decorative Corner */}
+          <div className="absolute bottom-10 right-10 flex items-center gap-4 opacity-20">
+            <div className="h-px w-20 bg-gold" />
+            <span className="text-[10px] uppercase tracking-[0.5em] text-gold font-bold italic">Est. 2012</span>
           </div>
         </section>
       </div>

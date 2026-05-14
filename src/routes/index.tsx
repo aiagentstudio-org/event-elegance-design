@@ -12,11 +12,14 @@ import heroImg from "@/assets/hero-wedding.jpg";
 import weddingDecor from "@/assets/wedding-decor.jpg";
 import corporate from "@/assets/corporate-event.jpg";
 import privateImg from "@/assets/private-celebration.jpg";
+import venueHero from "@/assets/venue-hero.jpg";
 import about from "@/assets/about-team.jpg";
 import g1 from "@/assets/gallery-1.jpg";
 import g2 from "@/assets/gallery-2.jpg";
 import g3 from "@/assets/gallery-3.jpg";
 import g4 from "@/assets/gallery-4.jpg";
+import v6 from "@/assets/gallery-6.MOV";
+import v12 from "@/assets/gallery-12.MOV";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -76,26 +79,36 @@ const testimonials = [
   { name: "Priya S.", event: "Anniversary · Delhi", quote: "An evening we will never forget. The attention to detail was simply exquisite." },
 ];
 
-const galleryImgs = [g1, g2, g3, g4, weddingDecor, corporate];
+const galleryImgs = [
+  { src: v12, type: "video", alt: "Royal wedding entrance ceremony with floral arch" },
+  { src: g2, type: "image", alt: "Luxury wedding reception table setting" },
+  { src: g3, type: "image", alt: "Bespoke floral decoration at corporate gala" },
+  { src: v6, type: "video", alt: "Cinematic wedding ceremony highlights" },
+  { src: weddingDecor, type: "image", alt: "Luxury mandap wedding decoration design" },
+  { src: corporate, type: "image", alt: "Corporate product launch event setup" }
+];
 
 function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    
+
     const ctx = gsap.context(() => {
-      // Hero Animation
-      const heroTitle = new SplitType(".hero-title", { types: "lines,words" });
-      gsap.from(heroTitle.words, {
-        y: 60,
-        opacity: 0,
-        rotateX: -30,
-        stagger: 0.05,
-        duration: 1.2,
-        ease: "power4.out",
-        delay: 0.4
-      });
+      // Hero Animation - Targeted & Clean
+      const hTitle = containerRef.current?.querySelector(".hero-title");
+      if (hTitle) {
+        const split = new SplitType(hTitle as HTMLElement, { types: "words,chars" });
+        gsap.from(split.chars, {
+          y: 40,
+          opacity: 0,
+          rotateX: -20,
+          stagger: 0.02,
+          duration: 1.2,
+          ease: "power4.out",
+          delay: 0.3
+        });
+      }
 
       gsap.from(".hero-sub", {
         opacity: 0,
@@ -113,18 +126,6 @@ function HomePage() {
         delay: 1.4
       });
 
-      // Stats Counting Effect (Simplified)
-      gsap.from(".stat-item", {
-        scrollTrigger: {
-          trigger: ".stats-section",
-          start: "top 85%",
-        },
-        opacity: 0,
-        y: 40,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: "power3.out"
-      });
 
       // Section Reveals
       const revealSections = document.querySelectorAll("[data-animate]");
@@ -170,30 +171,30 @@ function HomePage() {
             <img src={heroImg} alt="Luxury wedding stage" className="h-full w-full object-cover opacity-40" />
             <div className="absolute inset-0 bg-gradient-to-b from-bg-main via-transparent to-bg-main" />
           </div>
-          
+
           <div className="relative z-10 container-luxe text-center">
             <div className="flex justify-center mb-8">
               <span className="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-[10px] uppercase tracking-[0.4em] text-gold">
-                Elite Event Architecture
+                Bespoke Event Design
               </span>
             </div>
-            
+
             <h1 className="hero-title font-display text-7xl md:text-[10rem] leading-[0.9] tracking-tighter text-text-main">
               Crafting <br />
-              <span className="gradient-text italic">Masterpieces.</span>
+              <span className="text-white italic">Masterpieces.</span>
             </h1>
-            
+
             <p className="hero-sub mt-12 max-w-2xl mx-auto text-text-muted text-xl md:text-2xl font-light">
-              We design complex intersections of space, light, and emotion. 
-              The silent architect of grandeur in Delhi NCR.
+              We design complex intersections of space, light, and emotion.
+              The visionary creators of grandeur in Delhi NCR.
             </p>
-            
+
             <div className="hero-cta mt-16 flex flex-wrap justify-center gap-6">
-              <CtaButton to="/contact" variant="gold" className="px-12 py-5 text-sm uppercase tracking-widest font-bold">Start Your Project</CtaButton>
-              <CtaButton to="/gallery" variant="outline" className="px-12 py-5 text-sm uppercase tracking-widest font-bold backdrop-blur-sm">Our Archive</CtaButton>
+              <CtaButton to="/contact" variant="gold" className="px-12 py-5 text-sm uppercase tracking-widest font-bold">Plan Your Event</CtaButton>
+              <CtaButton to="/gallery" variant="outline" className="px-12 py-5 text-sm uppercase tracking-widest font-bold backdrop-blur-sm">View Portfolio</CtaButton>
             </div>
           </div>
-          
+
           {/* Scroll Indicator */}
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
             <div className="w-px h-16 bg-gradient-to-b from-gold to-transparent" />
@@ -203,68 +204,73 @@ function HomePage() {
         {/* BENTO SERVICES */}
         <section className="py-32 md:py-48 bg-bg-main relative overflow-hidden" data-animate>
           <div className="container-luxe">
-            <SectionHeading 
-              eyebrow="The Studio" 
-              title="Bespoke Capabilities" 
+            <SectionHeading
+              eyebrow="The Studio"
+              title="Bespoke Capabilities"
               subtitle="Our multi-disciplinary approach ensures every detail is rendered with elite precision."
               light
             />
-            
+
             <div className="bento-grid mt-24">
-              {/* Feature 1: Large */}
-              <div className="bento-card span-2 bg-bg-accent flex flex-col justify-between group">
+              {/* Feature 1: Large - Weddings */}
+              <div className="bento-card span-2 bg-bg-accent flex flex-col justify-between group overflow-hidden relative min-h-[400px]">
+                <img src={weddingDecor} className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-1000" alt="Luxury Weddings" />
+                <div className="absolute inset-0 bg-gradient-to-t from-bg-main via-bg-main/40 to-transparent" />
+
                 <div className="space-y-4 relative z-10">
-                  <div className="h-12 w-12 rounded-xl bg-gold/10 flex items-center justify-center">
+                  <div className="h-12 w-12 rounded-xl bg-gold/20 flex items-center justify-center backdrop-blur-md">
                     <Heart className="text-gold" size={24} />
                   </div>
-                  <h3 className="text-4xl md:text-5xl font-display">Luxury Weddings</h3>
-                  <p className="text-text-muted max-w-md">From concept to execution, we curate weddings that are as unique as the love they celebrate. Intimate ceremonies or grand destination galas.</p>
+                  <h3 className="text-4xl md:text-5xl font-display text-white">Luxury Weddings</h3>
+                  <p className="text-text-muted max-w-md">From concept to execution, we curate weddings that are as unique as the love they celebrate. Specializing in grand celebrations across Faridabad and Surajkund.</p>
                 </div>
                 <div className="mt-8 flex items-center gap-4 relative z-10">
-                  <Link to="/services" className="text-gold text-xs uppercase tracking-widest font-bold">View Wedding Portfolio →</Link>
-                </div>
-                <div className="absolute -bottom-10 -right-10 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Crown size={300} />
+                  <Link to="/services" className="text-gold text-xs uppercase tracking-widest font-bold hover:text-white transition-colors">View Wedding Portfolio →</Link>
                 </div>
               </div>
 
-              {/* Feature 2: Tall */}
-              <div className="bento-card row-2 bg-gradient-to-br from-bg-card to-bg-accent border-gold/20">
-                <div className="h-full flex flex-col justify-between">
+              {/* Feature 2: Tall - Corporate */}
+              <div className="bento-card row-2 bg-bg-card border-gold/20 flex flex-col justify-between group overflow-hidden relative">
+                <img src={corporate} className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-1000" alt="Corporate Excellence" />
+                <div className="absolute inset-0 bg-gradient-to-b from-bg-card via-transparent to-bg-card" />
+
+                <div className="h-full flex flex-col justify-between relative z-10">
                   <div className="space-y-4">
-                    <div className="h-12 w-12 rounded-xl bg-gold/10 flex items-center justify-center">
+                    <div className="h-12 w-12 rounded-xl bg-gold/20 flex items-center justify-center backdrop-blur-md">
                       <Briefcase className="text-gold" size={24} />
                     </div>
-                    <h3 className="text-4xl font-display">Corporate <br/> Excellence</h3>
-                    <p className="text-text-muted">High-stakes product launches and industry summits delivered with architectural precision.</p>
+                    <h3 className="text-4xl font-display text-white">Corporate <br /> Excellence</h3>
+                    <p className="text-text-muted">High-stakes product launches and industry summits delivered with architectural precision in Delhi NCR.</p>
                   </div>
                   <div className="mt-20">
                     <div className="text-6xl md:text-7xl font-display text-gold">100%</div>
                     <div className="text-[10px] uppercase tracking-widest text-text-muted mt-2">Precision Delivery Rate</div>
-                    <p className="mt-6 text-sm text-text-muted/60 leading-relaxed italic">"The silent architecture of joy in every boardroom."</p>
+                    <p className="mt-6 text-sm text-text-muted/60 leading-relaxed italic">"The seamless execution of joy in every boardroom."</p>
                   </div>
                 </div>
               </div>
 
-              {/* Feature 3: Small */}
-              <div className="bento-card bg-bg-card/50 backdrop-blur-sm">
-                <div className="space-y-4">
-                  <div className="h-10 w-10 rounded-xl bg-gold/10 flex items-center justify-center">
+              {/* Feature 3: Small - Private Parties */}
+              <div className="bento-card bg-bg-card/50 backdrop-blur-sm group overflow-hidden relative">
+                <img src={privateImg} className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:scale-110 transition-transform duration-1000" alt="Private Parties" />
+                <div className="space-y-4 relative z-10">
+                  <div className="h-10 w-10 rounded-xl bg-gold/20 flex items-center justify-center">
                     <PartyPopper className="text-gold" size={20} />
                   </div>
-                  <h4 className="text-2xl font-display">Private Parties</h4>
-                  <p className="text-text-muted text-sm">Elegant celebrations for the moments that matter most.</p>
+                  <h4 className="text-2xl font-display text-white">Private Parties</h4>
+                  <p className="text-text-muted text-sm">Elegant celebrations for the moments that matter most in the Surajkund region.</p>
                 </div>
               </div>
 
-              {/* Feature 4: Small */}
-              <div className="bento-card bg-gold/5 border-gold/10">
-                <div className="space-y-4">
-                  <div className="h-10 w-10 rounded-xl bg-gold/10 flex items-center justify-center">
+              {/* Feature 4: Small - Destination */}
+              <div className="bento-card bg-gold/5 border-gold/10 group overflow-hidden relative">
+                <img src={venueHero} className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:scale-110 transition-transform duration-1000" alt="Destination" />
+                <div className="space-y-4 relative z-10">
+                  <div className="h-10 w-10 rounded-xl bg-gold/20 flex items-center justify-center">
                     <MapPin className="text-gold" size={20} />
                   </div>
-                  <h4 className="text-2xl font-display">Destination</h4>
-                  <p className="text-text-muted text-sm">We handle the complexity of global logistics and design.</p>
+                  <h4 className="text-2xl font-display text-white">Destination</h4>
+                  <p className="text-text-muted text-sm">We handle the complexity of global logistics and design, starting from our base in Taj Surajkund.</p>
                 </div>
               </div>
             </div>
@@ -279,13 +285,13 @@ function HomePage() {
                 <img src={about} alt="RS Group Events team" className="w-full h-[600px] object-cover rounded-xl" loading="lazy" />
               </div>
               <div className="absolute -bottom-12 -right-12 hidden lg:block bg-bg-card text-text-main p-12 max-w-[280px] border border-gold/30 shadow-3xl z-20 rounded-2xl backdrop-blur-xl">
-                <div className="font-display text-7xl text-gold">12+</div>
+                <div className="font-display text-7xl text-gold">6+</div>
                 <div className="text-[11px] uppercase tracking-[0.3em] mt-4 font-bold text-text-muted leading-relaxed">Years of Masterful Craftsmanship</div>
               </div>
             </div>
             <div className="space-y-10">
               <div className="gold-divider !justify-start"><span className="eyebrow">The Ethos</span></div>
-              <h2 className="font-display text-6xl md:text-8xl text-text-main leading-[1.05]">Where every detail <br/> becomes a <span className="italic text-gold">legacy.</span></h2>
+              <h2 className="font-display text-6xl md:text-8xl text-text-main leading-[1.05]">Where every detail <br /> becomes a <span className="italic text-gold">legacy.</span></h2>
               <p className="text-xl text-text-muted leading-relaxed font-light max-w-xl">
                 Founded on the principles of architectural precision and artistic flair, RS Group Events is a boutique production studio. We don't just plan; we curate. Every texture, every lighting cue, and every guest interaction is designed to evoke a sense of wonder.
               </p>
@@ -298,17 +304,20 @@ function HomePage() {
         <section className="container-luxe py-32 md:py-48 relative overflow-hidden" data-animate>
           <SectionHeading eyebrow="The Portfolio" title="Exquisite Moments" subtitle="A collection of recent celebrations that define our signature aesthetic." light />
           <div className="mt-20 grid grid-cols-2 md:grid-cols-12 gap-4 md:gap-6">
-            {galleryImgs.map((src, i) => {
+            {galleryImgs.map((item, i) => {
               const isLarge = i === 0 || i === 5;
               return (
-                <Link 
-                  to="/gallery" 
-                  key={i} 
-                  className={`relative overflow-hidden group bento-card !p-0 border-white/5 ${
-                    isLarge ? "md:col-span-8 aspect-video" : "md:col-span-4 aspect-square"
-                  }`}
+                <Link
+                  to="/gallery"
+                  key={i}
+                  className={`relative overflow-hidden group bento-card !p-0 border-white/5 ${isLarge ? "md:col-span-8 aspect-video" : "md:col-span-4 aspect-square"
+                    }`}
                 >
-                  <img src={src} alt="Event" className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" loading="lazy" />
+                  {item.type === "video" ? (
+                    <video src={item.src} className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" autoPlay muted loop playsInline />
+                  ) : (
+                    <img src={item.src} alt={item.alt} className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" loading="lazy" />
+                  )}
                   <div className="absolute inset-0 bg-bg-main/60 opacity-0 group-hover:opacity-100 transition-all duration-700 flex flex-col items-center justify-center p-8 text-center backdrop-blur-[2px]">
                     <span className="text-gold text-[10px] uppercase tracking-[0.5em] font-bold">View Project</span>
                   </div>
@@ -346,13 +355,13 @@ function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-br from-gold to-gold-light opacity-95" />
           <div className="container-luxe py-32 text-center relative z-10">
             <h2 className="font-display text-5xl md:text-9xl text-bg-main leading-[0.8] tracking-tighter">
-              Let's craft your <br/> 
+              Let's craft your <br />
               <span className="italic">masterpiece.</span>
             </h2>
             <p className="mt-12 text-bg-main/70 text-xl md:text-2xl font-light max-w-2xl mx-auto">Available for exclusive bookings across Delhi NCR and destination weddings.</p>
             <div className="mt-16 flex flex-wrap justify-center gap-6">
-              <CtaButton href="tel:+919953595353" variant="gold" className="!bg-bg-main !text-gold px-12 py-6 text-sm uppercase tracking-[0.3em] font-bold">Call Representative</CtaButton>
-              <CtaButton to="/contact" variant="outline" className="!border-bg-main/20 !text-bg-main px-12 py-6 text-sm uppercase tracking-[0.3em] font-bold">Send Inquiry</CtaButton>
+              <CtaButton href="tel:+919953595353" variant="gold" className="!bg-white !text-bg-main px-12 py-6 text-sm uppercase tracking-[0.3em] font-bold">Call Representative</CtaButton>
+              <CtaButton to="/contact" variant="outline" className="!border-white text-white/70 !text-bg-main px-12 py-6 text-sm uppercase tracking-[0.3em] font-bold">Send Inquiry</CtaButton>
             </div>
           </div>
           <div className="decorative-text bottom-0 right-0 !text-bg-main opacity-[0.05]">RS GROUP</div>

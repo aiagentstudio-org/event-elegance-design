@@ -10,8 +10,8 @@ type Props = {
 };
 
 const styles = {
-  gold: "bg-gold text-bg-main hover:bg-gold-light",
-  outline: "border border-white/20 text-text-main hover:border-gold hover:text-gold",
+  gold: "bg-gold text-[#0A0A0A] hover:bg-gold-light font-bold",
+  outline: "border border-gold/40 text-gold hover:border-gold hover:bg-gold/10",
   navy: "bg-bg-accent text-text-main hover:bg-white/5 border border-white/5",
 };
 

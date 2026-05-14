@@ -8,6 +8,15 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 import teamImg from "@/assets/about-team.jpg";
+import founderImg from "@/assets/founder.jpeg";
+import vElegance from "@/assets/values-elegance.png";
+import vReliability from "@/assets/values-reliability.png";
+import vCustomization from "@/assets/values-customization.png";
+import vGuest from "@/assets/values-guest.png";
+import pHeart from "@/assets/philosophy-heart.png";
+import pArtistic from "@/assets/philosophy-artistic.png";
+import pTrust from "@/assets/philosophy-trust.png";
+
 
 export const Route = createFileRoute("/team")({
   head: () => ({
@@ -19,17 +28,18 @@ export const Route = createFileRoute("/team")({
   component: TeamPage,
 });
 
-const values = [
-  { icon: Heart, title: "Heart-Led", desc: "We don't just plan events; we care for your memories." },
-  { icon: Zap, title: "Artistic Edge", desc: "Pushing the boundaries of conventional event decor." },
-  { icon: ShieldCheck, title: "Absolute Trust", desc: "A decades-long reputation for reliability and excellence." },
+const philosophies = [
+  { img: pHeart, title: "Heart-Led", desc: "We don't just plan events; we care for your memories. Every decision is filtered through the emotional heartbeat of your celebration.", tint: "from-rose-500/40" },
+  { img: pArtistic, title: "Artistic Edge", desc: "Pushing the boundaries of conventional event decor. We architect spaces that challenge the expected and embrace the avant-garde.", tint: "from-emerald-500/40" },
+  { img: pTrust, title: "Absolute Trust", desc: "A decades-long reputation for reliability and excellence. Our word is our bond, and our execution is our signature.", tint: "from-gold/40" },
 ];
 
-const teamMembers = [
-  { name: "Rajiv Sharma", role: "Creative Director", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop" },
-  { name: "Sonia Kapoor", role: "Lead Wedding Planner", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop" },
-  { name: "Amit Verma", role: "Head of Operations", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop" },
-  { name: "Neha Singh", role: "Floral Designer", img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop" },
+// We use a collective of experts on a contract basis
+const collectiveStats = [
+  { role: "Visual Artists", count: "12+", desc: "Sculpting light and space" },
+  { role: "Floral Architects", count: "08", desc: "Organic structural design" },
+  { role: "Logistic Strategists", count: "15", desc: "The precision engine" },
+  { role: "Storytellers", count: "05", desc: "Capturing the intangible" }
 ];
 
 function TeamPage() {
@@ -38,18 +48,6 @@ function TeamPage() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
-      // Hero Title Animation
-      const heroTitle = new SplitType(".hero-title", { types: "chars,words" });
-      gsap.from(heroTitle.chars, {
-        y: 40,
-        opacity: 0,
-        rotateX: -45,
-        stagger: 0.02,
-        duration: 1,
-        ease: "power4.out",
-        delay: 0.2
-      });
-
       // Founder Image Parallax
       gsap.to(".founder-image", {
         scrollTrigger: {
@@ -63,31 +61,6 @@ function TeamPage() {
       });
 
       // Values Stagger
-      gsap.from(".value-card", {
-        scrollTrigger: {
-          trigger: ".values-grid",
-          start: "top 80%",
-        },
-        y: 60,
-        opacity: 0,
-        stagger: 0.2,
-        duration: 1,
-        ease: "power3.out"
-      });
-
-      // Team Members Stagger
-      gsap.from(".team-card", {
-        scrollTrigger: {
-          trigger: ".team-grid",
-          start: "top 80%",
-        },
-        y: 80,
-        opacity: 0,
-        stagger: 0.15,
-        duration: 1.2,
-        ease: "power4.out"
-      });
-
       // Generic Reveal for Sections
       const revealSections = document.querySelectorAll("[data-reveal]");
       revealSections.forEach((el) => {
@@ -96,7 +69,7 @@ function TeamPage() {
             trigger: el,
             start: "top 85%",
           },
-          y: 40,
+          y: 30,
           opacity: 0,
           duration: 1,
           ease: "power2.out"
@@ -112,40 +85,52 @@ function TeamPage() {
     <Layout>
       <div ref={containerRef}>
         <PageHero 
-          title={<span className="hero-title">The Artisans</span>} 
-          subtitle="Meet the visionary team behind the region's most celebrated events." 
+          title={
+            <span className="team-main-title !text-white !opacity-100 drop-shadow-2xl">
+              The Artisans
+            </span>
+          } 
+          subtitle={
+            <span className="!text-white/90 !opacity-100 drop-shadow-lg">
+              Meet the visionary team behind the region's most celebrated events.
+            </span>
+          } 
           image={teamImg} 
         />
 
         {/* FOUNDER SPOTLIGHT */}
         <section className="container-luxe py-20 md:py-32 founder-section overflow-hidden">
           <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="relative perspective-container" data-reveal>
-              <div className="isometric-card overflow-hidden glass-card p-4">
+            <div className="relative" data-reveal>
+              <div className="overflow-hidden rounded-sm border border-white/10 shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop" 
-                  alt="Founder" 
+                  src={founderImg} 
+                  alt="Sanjeev - Founder" 
                   className="founder-image w-full aspect-[4/5] object-cover grayscale hover:grayscale-0 transition-all duration-700" 
                 />
               </div>
-              <div className="absolute -top-10 -left-10 bg-gold text-navy p-8 glass-card hidden lg:block z-20">
-                <div className="font-display text-4xl leading-tight italic">"Design is not just what it looks like, it's how it feels."</div>
+              <div className="absolute -bottom-6 -right-6 md:-right-12 bg-gold text-navy p-6 md:p-10 shadow-2xl z-20 max-w-[280px] md:max-w-sm">
+                <div className="font-display text-2xl md:text-3xl leading-tight italic">"Design is not just what it looks like, it's how it feels."</div>
+                <div className="mt-4 h-px w-12 bg-navy/20" />
+                <div className="mt-2 text-[10px] uppercase tracking-[0.3em] font-bold opacity-60 italic">— The RS Signature</div>
               </div>
             </div>
             <div data-reveal>
               <div className="gold-divider mb-6 !justify-start"><span className="eyebrow">The Visionary</span></div>
-              <h2 className="font-display text-5xl md:text-6xl text-navy">Rajesh Singh</h2>
-              <p className="mt-8 text-xl text-charcoal/80 leading-relaxed font-light">
-                With over 15 years in the hospitality and luxury sector, Rajesh founded RS Group with a singular mission: to bring world-class event production to Delhi NCR.
+              <h2 className="font-display text-5xl md:text-6xl text-text-main">Sanjeev</h2>
+              <p className="mt-8 text-xl text-text-muted leading-relaxed font-light">
+                With over 15 years in the hospitality and luxury sector, Sanjeev founded RS Group with a singular mission: to bring world-class event production to Delhi NCR.
               </p>
-              <p className="mt-6 text-charcoal/70 leading-relaxed">
-                His eye for detail and uncompromising standard for excellence have made RS Group a name synonymous with prestige. Rajesh personally oversees the creative direction of every major project, ensuring the RS signature is present in every floral arrangement and lighting cue.
+              <p className="mt-6 text-text-muted leading-relaxed">
+                His eye for detail and uncompromising standard for excellence have made RS Group a name synonymous with prestige. Sanjeev personally oversees the creative direction of every major project, ensuring the RS signature is present in every floral arrangement and lighting cue.
               </p>
               <div className="mt-12 flex items-center gap-6">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Jon_Kirsch%27s_Signature.png" alt="Signature" className="h-16 opacity-60 invert dark:invert-0" />
+                <div className="h-16 w-32 border-b border-gold/30 flex items-center justify-center">
+                  <span className="font-display text-2xl italic text-gold opacity-60">Sanjeev</span>
+                </div>
                 <div>
-                  <div className="text-xs uppercase tracking-widest text-gold font-bold">Rajesh Singh</div>
-                  <div className="text-[10px] uppercase tracking-widest text-charcoal/50 mt-1">Founder & CEO, RS Group</div>
+                  <div className="text-xs uppercase tracking-widest text-gold font-bold">Sanjeev</div>
+                  <div className="text-[10px] uppercase tracking-widest text-text-muted mt-1">Founder & CEO, RS Group</div>
                 </div>
               </div>
             </div>
@@ -153,87 +138,122 @@ function TeamPage() {
         </section>
 
         {/* THE ARTISAN COLLECTIVE */}
-        <section className="bg-navy py-32 md:py-48 relative overflow-hidden" data-animate>
+        <section className="bg-bg-accent py-32 md:py-48 relative overflow-hidden">
           <div className="container-luxe">
-            <div className="max-w-2xl mb-24">
-               <div className="gold-divider !justify-start mb-10"><span className="eyebrow text-gold/60">Our Network</span></div>
-               <h2 className="font-display text-5xl md:text-7xl text-white tracking-tighter leading-tight">
-                 The Artisan <br />
-                 <span className="italic text-gold">Collective.</span>
-               </h2>
-               <p className="mt-8 text-white/50 text-xl leading-relaxed font-light">
-                 RS Group isn't just a team; it's a curated hub of the world's most talented florists, set designers, and lighting technicians.
-               </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-0.5 bg-white/10 border border-white/10">
-               {[
-                 { role: "Visual Artists", count: "12+", desc: "Sculpting light and space" },
-                 { role: "Floral Architects", count: "08", desc: "Organic structural design" },
-                 { role: "Logistic Strategists", count: "15", desc: "The precision engine" },
-                 { role: "Storytellers", count: "05", desc: "Capturing the intangible" }
-               ].map((item, idx) => (
-                 <div key={idx} className="bg-navy p-12 hover:bg-navy-deep transition-colors group">
-                    <div className="text-gold font-display text-4xl mb-4 group-hover:scale-110 transition-transform origin-left">{item.count}</div>
-                    <div className="text-white text-lg font-medium mb-2">{item.role}</div>
-                    <div className="text-white/40 text-sm">{item.desc}</div>
+            <div className="grid md:grid-cols-2 gap-20 items-center">
+              <div className="max-w-2xl">
+                 <div className="gold-divider !justify-start mb-10"><span className="eyebrow text-gold/80">Our Network</span></div>
+                 <h2 className="font-display text-5xl md:text-8xl text-white tracking-tighter leading-tight mb-8">
+                   The Artisan <br />
+                   <span className="italic text-gold">Collective.</span>
+                 </h2>
+                 <p className="text-white/80 text-xl leading-relaxed font-light">
+                   RS Group isn't just a team; it's a curated hub of the region's most talented florists, set designers, and lighting technicians.
+                 </p>
+                 
+                 <div className="mt-16 grid grid-cols-2 gap-px bg-white/10 border border-white/10">
+                    {collectiveStats.map((item, idx) => (
+                      <div key={idx} className="bg-bg-main p-8 hover:bg-white/5 transition-colors group">
+                         <div className="text-gold font-display text-3xl mb-2 group-hover:scale-110 transition-transform origin-left">{item.count}</div>
+                         <div className="text-white text-sm uppercase tracking-widest mb-1">{item.role}</div>
+                         <div className="text-white/40 text-[10px]">{item.desc}</div>
+                      </div>
+                    ))}
                  </div>
-               ))}
+              </div>
+
+              {/* CREATIVE RIGHT SIDE: Bespoke Grid */}
+              <div className="grid grid-cols-2 gap-4 h-full py-8">
+                <div className="space-y-4">
+                  <div className="aspect-[4/5] bg-bg-card overflow-hidden rounded-sm border border-white/5 grayscale hover:grayscale-0 transition-all duration-1000">
+                    <img src={vElegance} className="w-full h-full object-cover" alt="Artisan 1" />
+                  </div>
+                  <div className="aspect-square bg-bg-card overflow-hidden rounded-sm border border-white/5 grayscale hover:grayscale-0 transition-all duration-1000">
+                    <img src={vReliability} className="w-full h-full object-cover" alt="Artisan 2" />
+                  </div>
+                </div>
+                <div className="space-y-4 pt-12">
+                  <div className="aspect-square bg-bg-card overflow-hidden rounded-sm border border-white/5 grayscale hover:grayscale-0 transition-all duration-1000">
+                    <img src={vCustomization} className="w-full h-full object-cover" alt="Artisan 3" />
+                  </div>
+                  <div className="aspect-[4/5] bg-bg-card overflow-hidden rounded-sm border border-white/5 grayscale hover:grayscale-0 transition-all duration-1000">
+                    <img src={vGuest} className="w-full h-full object-cover" alt="Artisan 4" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div className="decorative-text -bottom-10 right-0 opacity-[0.03]">CRAFT</div>
         </section>
 
-        {/* CORE VALUES */}
-        <section className="bg-navy py-24 text-ivory relative overflow-hidden">
-          <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
-          <div className="container-luxe relative z-10">
-            <div className="grid md:grid-cols-3 gap-12 values-grid">
-              {values.map((v, i) => (
-                <div key={i} className="value-card group p-10 glass-card border-gold/10 hover:border-gold/40 transition-all duration-500">
-                  <div className="h-16 w-16 bg-gold/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-gold transition-colors duration-500">
-                    <v.icon className="text-gold group-hover:text-navy" size={32} />
+        {/* CINEMATIC PHILOSOPHY */}
+        <section className="bg-bg-main relative">
+          {philosophies.map((p, i) => (
+            <div key={i} className="relative min-h-[600px] md:min-h-[80vh] flex items-center overflow-hidden group border-b border-white/5">
+              <div className="absolute inset-0">
+                <img src={p.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100" alt={p.title} />
+                <div className={`absolute inset-0 bg-gradient-to-r ${p.tint} via-bg-main/90 to-bg-main`} />
+              </div>
+              
+              <div className="container-luxe relative z-10 py-20">
+                <div className="max-w-2xl" data-reveal>
+                  <div className="font-display text-[8rem] md:text-[12rem] text-white/5 absolute -top-16 -left-10 select-none pointer-events-none group-hover:text-gold/10 transition-colors duration-1000">
+                    0{i + 1}
                   </div>
-                  <h3 className="font-display text-3xl mb-4">{v.title}</h3>
-                  <p className="text-ivory/60 leading-relaxed text-sm">{v.desc}</p>
+                  <h3 className="font-display text-5xl md:text-8xl text-white mb-8 tracking-tighter leading-none">
+                    {p.title}
+                  </h3>
+                  <p className="text-white/70 text-xl md:text-2xl font-light leading-relaxed max-w-xl">
+                    {p.desc}
+                  </p>
+                  <div className="mt-12 h-px w-24 bg-gold group-hover:w-48 transition-all duration-700" />
                 </div>
-              ))}
+              </div>
+            </div>
+          ))}
+        </section>
+
+        {/* COLLECTIVE IMAGE */}
+        <section className="container-luxe py-20 md:py-32">
+          <SectionHeading 
+            eyebrow="The Collective" 
+            title="A dynamic assembly of artisans" 
+            subtitle="We maintain an elite network of contract-based specialists, refreshed every 2-3 years to ensure cutting-edge creativity and operational excellence." 
+          />
+            <div className="mt-20 relative group">
+            <div className="aspect-[21/9] overflow-hidden rounded-2xl border border-white/5 shadow-2xl">
+              <img 
+                src={teamImg} 
+                alt="RS Group Artisan Collective" 
+                className="h-full w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-bg-main/90 via-bg-main/40 to-transparent" />
+            </div>
+            <div className="absolute bottom-12 left-12 right-12 flex flex-col md:flex-row justify-between items-end md:items-center gap-6">
+              <div className="max-w-xl">
+                <h3 className="font-display text-4xl text-white mb-4 italic">Bespoke Talent Procurement</h3>
+                <p className="text-white/80 leading-relaxed">
+                  Every project at RS Group is unique. We don't believe in a one-size-fits-all team. Instead, we assemble a bespoke collective of artisans specifically chosen for the architectural and emotional requirements of your event.
+                </p>
+              </div>
+              <div className="hidden md:block">
+                <span className="px-6 py-3 rounded-full border border-gold bg-gold/10 backdrop-blur-md text-gold text-[10px] uppercase tracking-[0.3em] font-bold shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+                  Refreshed Bi-Annually
+                </span>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* TEAM GRID */}
-        <section className="container-luxe py-20 md:py-32">
-          <SectionHeading 
-            eyebrow="Our Experts" 
-            title="Mastering the craft of celebration" 
-            subtitle="A collective of designers, planners, and strategists working in harmony." 
-          />
-          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 team-grid">
-            {teamMembers.map((member, i) => (
-              <div key={i} className="team-card group relative">
-                <div className="aspect-[3/4] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 glass-card p-2">
-                  <img src={member.img} alt={member.name} className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-1000" />
-                </div>
-                <div className="mt-6 text-center">
-                  <h4 className="text-xl text-navy font-display">{member.name}</h4>
-                  <div className="h-px w-8 bg-gold/30 mx-auto my-3" />
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-gold font-bold">{member.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* RECOGNITION */}
-        <section className="bg-pale-gold/20 py-20 border-t border-border" data-reveal>
+        <section className="bg-bg-accent py-20 border-t border-white/5 overflow-hidden relative">
           <div className="container-luxe text-center">
-            <p className="eyebrow mb-12">Global Recognition</p>
-            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-30 grayscale">
-              <span className="font-display text-2xl md:text-3xl tracking-tight">WeddingWire</span>
-              <span className="font-display text-2xl md:text-3xl tracking-tight">Vogue Weddings</span>
-              <span className="font-display text-2xl md:text-3xl tracking-tight">Condé Nast</span>
-              <span className="font-display text-2xl md:text-3xl tracking-tight">ET Panache</span>
+            <p className="eyebrow mb-12">Regional Prestige</p>
+            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+              <span className="font-display text-2xl md:text-3xl tracking-tight text-white/60">Delhi NCR Planners</span>
+              <span className="font-display text-2xl md:text-3xl tracking-tight text-white/60">Surajkund Elite</span>
+              <span className="font-display text-2xl md:text-3xl tracking-tight text-white/60">Faridabad Luxury</span>
+              <span className="font-display text-2xl md:text-3xl tracking-tight text-white/60">ET Panache</span>
             </div>
           </div>
         </section>

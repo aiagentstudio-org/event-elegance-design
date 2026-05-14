@@ -43,7 +43,7 @@ export function Footer() {
         <div>
           <h4 className="text-gold text-sm uppercase tracking-[0.25em] mb-4">Follow</h4>
           <div className="flex gap-3">
-            <a href="https://instagram.com" aria-label="Instagram" className="p-2.5 border border-gold/40 hover:bg-gold hover:text-navy transition-colors rounded-sm"><Instagram size={18} /></a>
+            <a href="https://www.instagram.com/rsgroupdecors?igsh=dTFwYjVkbzJycnNi&utm_source=rsgroupevent.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="p-2.5 border border-gold/40 hover:bg-gold hover:text-navy transition-colors rounded-sm"><Instagram size={18} /></a>
             <a href="https://facebook.com" aria-label="Facebook" className="p-2.5 border border-gold/40 hover:bg-gold hover:text-navy transition-colors rounded-sm"><Facebook size={18} /></a>
           </div>
           <p className="text-xs text-ivory/60 mt-6">Service area: Surajkund · Faridabad · Delhi · Gurgaon · Noida</p>
