@@ -22,72 +22,79 @@ export const Route = createFileRoute("/contact")({
 
 import { createServerFn } from "@tanstack/react-start";
 
-const submitInquiry = createServerFn("POST", async (data: any) => {
-  const { Resend } = await import("resend");
-  // Ensure the RESEND_API_KEY is set in your environment
-  const resend = new Resend(process.env.RESEND_API_KEY || "re_mock_key");
+const submitInquiry = createServerFn({ method: "POST" })
+  .handler(async (ctx: any) => {
+    const data = ctx.data;
+    console.log("------------------------------------------");
+    console.log("🔥 SERVER FUNCTION TRIGGERED: submitInquiry");
+    console.log("Data received:", JSON.stringify(data, null, 2));
+    console.log("API Key present:", !!process.env.RESEND_API_KEY);
+    console.log("------------------------------------------");
 
-  const { name, email, phone, event, date, guests, location, message } = data;
+    const { Resend } = await import("resend");
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
-  try {
-    // 1. Send inquiry notification to RS Group
-    const adminEmail = await resend.emails.send({
-      from: "RS Group Inquiries <onboarding@resend.dev>", // Replace with verified domain in production
-      to: ["hello@rsgroupevent.com"],
-      subject: `New Event Inquiry: ${event} — ${name}`,
-      html: `
-        <div style="font-family: sans-serif; padding: 20px; color: #1a1a1a;">
-          <h2 style="border-bottom: 1px solid #d4af37; padding-bottom: 10px;">New Event Lead</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Contact:</strong> ${phone} | ${email}</p>
-          <p><strong>Event:</strong> ${event}</p>
-          <p><strong>Date:</strong> ${date || "Not specified"}</p>
-          <p><strong>Guests:</strong> ${guests || "Not specified"}</p>
-          <p><strong>Location:</strong> ${location || "Not specified"}</p>
-          <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-left: 4px solid #d4af37;">
-            <strong>Vision:</strong><br/>${message || "No message provided."}
+    const { name, email, phone, event, date, guests, location, message } = data;
+
+    try {
+      // 1. Send inquiry notification to RS Group
+      const adminEmail = await resend.emails.send({
+        from: "RS Group Inquiries <hello@rsgroupevent.com>",
+        to: ["hello@rsgroupevent.com"],
+        subject: `New Event Inquiry: ${event} — ${name}`,
+        html: `
+          <div style="font-family: sans-serif; padding: 20px; color: #1a1a1a;">
+            <h2 style="border-bottom: 1px solid #d4af37; padding-bottom: 10px;">New Event Lead</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Contact:</strong> ${phone} | ${email}</p>
+            <p><strong>Event:</strong> ${event}</p>
+            <p><strong>Date:</strong> ${date || "Not specified"}</p>
+            <p><strong>Guests:</strong> ${guests || "Not specified"}</p>
+            <p><strong>Location:</strong> ${location || "Not specified"}</p>
+            <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-left: 4px solid #d4af37;">
+              <strong>Vision:</strong><br/>${message || "No message provided."}
+            </div>
           </div>
-        </div>
-      `,
-    });
+        `,
+      });
 
-    console.info("SERVER LOG: Admin notification sent successfully.", adminEmail.data?.id);
+      console.info("SERVER LOG: Admin notification sent successfully.", adminEmail.data?.id);
 
-    // 2. Send "Thank You" confirmation to the sender
-    const userEmail = await resend.emails.send({
-      from: "RS Group Events <onboarding@resend.dev>", // Replace with verified domain in production
-      to: [email],
-      subject: `Namaste — We've received your inquiry`,
-      html: `
-        <div style="font-family: serif; color: #1a1a1a; max-width: 600px; margin: 0 auto; padding: 40px; border: 1px solid #e5e5e5;">
-          <h1 style="font-size: 24px; font-weight: normal; margin-bottom: 24px;">Namaste ${name},</h1>
-          <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
-            Thank you for reaching out to RS Group Events. We have received your inquiry regarding your upcoming <strong>${event}</strong>.
-          </p>
-          <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
-            Our creative team is currently reviewing your details. We pride ourselves on architectural precision and bespoke storytelling, and we look forward to discussing how we can bring your vision to life.
-          </p>
-          <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
-            A member of our lead planning team will contact you personally within the next <strong>24 hours</strong>.
-          </p>
-          <hr style="border: 0; border-top: 1px solid #d4af37; margin: 40px 0;" />
-          <p style="font-size: 14px; color: #666;">
-            Warm regards,<br />
-            <strong>RS Group Events Team</strong><br />
-            Taj Hotel, Surajkund, Delhi NCR
-          </p>
-        </div>
-      `,
-    });
+      // 2. Send "Thank You" confirmation to the sender
+      const userEmail = await resend.emails.send({
+        from: "RS Group Events <hello@rsgroupevent.com>",
+        to: [email],
+        subject: `Namaste — We've received your inquiry`,
+        html: `
+          <div style="font-family: serif; color: #1a1a1a; max-width: 600px; margin: 0 auto; padding: 40px; border: 1px solid #e5e5e5;">
+            <h1 style="font-size: 24px; font-weight: normal; margin-bottom: 24px;">Namaste ${name},</h1>
+            <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
+              Thank you for reaching out to RS Group Events. We have received your inquiry regarding your upcoming <strong>${event}</strong>.
+            </p>
+            <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
+              Our creative team is currently reviewing your details. We pride ourselves on architectural precision and bespoke storytelling, and we look forward to discussing how we can bring your vision to life.
+            </p>
+            <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
+              A member of our lead planning team will contact you personally within the next <strong>24 hours</strong>.
+            </p>
+            <hr style="border: 0; border-top: 1px solid #d4af37; margin: 40px 0;" />
+            <p style="font-size: 14px; color: #666;">
+              Warm regards,<br />
+              <strong>RS Group Events Team</strong><br />
+              Taj Hotel, Surajkund, Delhi NCR
+            </p>
+          </div>
+        `,
+      });
 
-    console.info("SERVER LOG: Confirmation email sent to user.", userEmail.data?.id);
+      console.info("SERVER LOG: Confirmation email sent to user.", userEmail.data?.id);
 
-    return { success: true, adminId: adminEmail.data?.id, userId: userEmail.data?.id };
-  } catch (error) {
-    console.error("SERVER ERROR: Resend delivery failed:", error);
-    throw error;
-  }
-});
+      return { success: true, adminId: adminEmail.data?.id, userId: userEmail.data?.id };
+    } catch (error) {
+      console.error("SERVER ERROR: Resend delivery failed:", error);
+      throw error;
+    }
+  });
 
 function ContactPage() {
   const [sent, setSent] = useState(false);
@@ -140,7 +147,7 @@ function ContactPage() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await submitInquiry(data);
+      const response = await submitInquiry({ data });
       console.log("SUCCESS: Inquiry sent to server successfully.", response);
       setSent(true);
       // Add success animation
@@ -152,9 +159,8 @@ function ContactPage() {
       });
     } catch (error) {
       console.error("CRITICAL FAILURE: Submission failed to reach server or Resend crashed:", error);
-      // Even if Resend fails due to missing API key in dev, we'll show success for UI demo
-      // but in real app we'd handle error properly.
-      setSent(true); 
+      // Don't setSent(true) here! Show an error state instead.
+      alert("Submission failed. Please check the server logs.");
     } finally {
       setLoading(false);
     }
