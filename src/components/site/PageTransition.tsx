@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 interface PageTransitionProps {
   children: React.ReactNode;
 }
@@ -31,9 +33,7 @@ export function PageTransition({ children }: PageTransitionProps) {
         ease: "power3.out",
         onComplete: () => {
           // Essential for ScrollTrigger to recalculate after layout shift
-          import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
-            ScrollTrigger.refresh();
-          });
+          ScrollTrigger.refresh();
         },
       },
       "-=0.6",
