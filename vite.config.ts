@@ -14,5 +14,20 @@ export default defineConfig({
   },
   vite: {
     assetsInclude: ["**/*.HEIC", "**/*.heic", "**/*.MOV"],
+    build: {
+      ssr: true,
+      rollupOptions: {
+        output: {
+          entryFileNames: (chunk) => {
+            if (chunk.name === 'server' || chunk.facadeModuleId?.includes('server')) {
+              return 'server.js';
+            }
+            return 'assets/[name]-[hash].js';
+          },
+          chunkFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: 'assets/[name]-[hash].[ext]',
+        },
+      },
+    },
   },
 });

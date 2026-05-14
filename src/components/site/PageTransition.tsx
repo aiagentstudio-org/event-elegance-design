@@ -27,17 +27,22 @@ export function PageTransition({ children }: PageTransitionProps) {
       opacity: 1,
       y: 0,
       duration: 0.8,
-      ease: "power3.out"
+      ease: "power3.out",
+      onComplete: () => {
+        // Essential for ScrollTrigger to recalculate after layout shift
+        import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+          ScrollTrigger.refresh();
+        });
+      }
     }, "-=0.6");
 
     return () => {
-      // Exit animation logic would need a router interceptor, 
-      // but keyed re-mounts handle the entrance beautifully.
+      // Exit animation logic
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full overflow-hidden">
+    <div ref={containerRef} className="relative w-full">
       {/* Wipe Overlay */}
       <div
         ref={wipeRef}

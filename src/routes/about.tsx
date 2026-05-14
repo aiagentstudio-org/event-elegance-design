@@ -67,48 +67,59 @@ function AboutPage() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      // Reveal sections using unified data-animate
-      const reveals = document.querySelectorAll("[data-animate]");
-      reveals.forEach((el) => {
-        gsap.from(el, {
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-          },
-          opacity: 0,
-          y: 40,
-          duration: 1.2,
-          ease: "power3.out",
+    let ctx: gsap.Context;
+
+    // Add a tiny delay to ensure fonts and layout are ready
+    const timer = setTimeout(() => {
+      ctx = gsap.context(() => {
+        // Reveal sections using unified data-animate
+        const reveals = document.querySelectorAll("[data-animate]");
+        reveals.forEach((el) => {
+          gsap.from(el, {
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+            },
+            opacity: 0,
+            y: 40,
+            duration: 1.2,
+            ease: "power3.out",
+            clearProps: "all"
+          });
         });
-      });
 
-      // Stagger stats
-      gsap.from(".stat-item", {
-        scrollTrigger: {
-          trigger: ".stats-grid",
-          start: "top 90%",
-        },
-        y: 20,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: "back.out(1.7)",
-      });
+        // Stagger stats
+        gsap.from(".stat-item", {
+          scrollTrigger: {
+            trigger: ".stats-grid",
+            start: "top 90%",
+          },
+          y: 20,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "back.out(1.7)",
+          clearProps: "all"
+        });
 
-      // Stagger value cards
-      gsap.from(".value-card", {
-        scrollTrigger: {
-          trigger: ".values-grid",
-          start: "top 90%",
-        },
-        y: 30,
-        stagger: 0.1,
-        duration: 1,
-        ease: "power2.out",
-      });
-    }, containerRef);
+        // Stagger value cards
+        gsap.from(".value-card", {
+          scrollTrigger: {
+            trigger: ".values-grid",
+            start: "top 90%",
+          },
+          y: 30,
+          stagger: 0.1,
+          duration: 1,
+          ease: "power2.out",
+          clearProps: "all"
+        });
+      }, containerRef);
+    }, 50);
 
-    return () => ctx.revert();
+    return () => {
+      clearTimeout(timer);
+      if (ctx) ctx.revert();
+    };
   }, []);
 
   return (

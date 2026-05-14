@@ -6,7 +6,10 @@
   "scripts": {
     "start": "vite preview",
     "dev": "vite dev",
+    "clean": "node -e \"const fs = require('fs'); if (fs.existsSync('dist')) fs.rmSync('dist', { recursive: true, force: true })\"",
+    "prebuild": "npm run clean",
     "build": "vite build",
+    "postbuild": "node -e \"const fs = require('fs'); const path = require('path'); const serverPath = 'dist/server/server.js'; const assetsDir = 'dist/server/assets'; let targetFile = ''; if (fs.existsSync(serverPath)) { const corePath = 'dist/server/server-core.js'; fs.renameSync(serverPath, corePath); targetFile = './server-core.js'; } else if (fs.existsSync(assetsDir)) { const found = fs.readdirSync(assetsDir).find(f => f.startsWith('server-') && f.endsWith('.js')); if (found) targetFile = './assets/' + found; } if (targetFile) { const shimContent = 'import * as mod from \\'' + targetFile + '\\';\\nconst server = mod.default || mod.a1?.default || mod;\\nexport const fetch = server.fetch || mod.fetch;\\nexport default server;\\n'; fs.writeFileSync('dist/server/server.js', shimContent); console.log('Stabilized server.js with ESM shim'); } else { console.error('Could not find server entry file'); }\"",
     "build:dev": "vite build --mode development",
     "preview": "npx wrangler dev -c dist/server/wrangler.json",
     "lint": "eslint .",
@@ -61,6 +64,7 @@
     "react-hook-form": "^7.71.2",
     "react-resizable-panels": "^4.6.5",
     "recharts": "^2.15.4",
+    "resend": "^6.12.3",
     "sonner": "^2.0.7",
     "split-type": "^0.3.4",
     "tailwind-merge": "^3.5.0",

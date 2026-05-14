@@ -13,7 +13,7 @@ export function PageHero({
 }: {
   eyebrow?: string;
   title: ReactNode;
-  subtitle?: string;
+  subtitle?: ReactNode;
   image?: string;
   video?: string;
   children?: ReactNode;
@@ -21,44 +21,66 @@ export function PageHero({
   const imageRef = useRef<HTMLImageElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    
-    const ctx = gsap.context(() => {
-      const mediaRef = imageRef.current || videoRef.current;
-      if (mediaRef) {
-        gsap.to(mediaRef, {
-          scrollTrigger: {
-            trigger: "section",
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-          y: 100,
-          ease: "none",
-        });
+    let ctx: gsap.Context;
+
+    // Wait for fonts and layout to be fully stable
+    const init = async () => {
+      if (typeof document !== 'undefined' && 'fonts' in document) {
+        await document.fonts.ready;
       }
 
-      if (titleRef.current) {
-        const split = new SplitType(titleRef.current, { types: "chars,words" });
-        gsap.from(split.chars, {
-          y: 40,
-          opacity: 0,
-          rotateX: -20,
-          stagger: 0.02,
-          duration: 1.2,
-          ease: "power4.out",
-          delay: 0.2,
-        });
-      }
-    });
+      ctx = gsap.context(() => {
+        const mediaRef = imageRef.current || videoRef.current;
+        if (mediaRef) {
+          gsap.to(mediaRef, {
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: true,
+            },
+            y: 100,
+            ease: "none",
+          });
+        }
 
-    return () => ctx.revert();
-  }, []);
+        if (titleRef.current) {
+          const split = new SplitType(titleRef.current, { types: "chars,words" });
+          
+          // Force layout stability for split elements
+          split.words?.forEach(word => {
+            word.style.display = "inline-block";
+            word.style.whiteSpace = "nowrap";
+          });
+
+          gsap.from(split.chars, {
+            y: 40,
+            opacity: 0,
+            rotateX: -20,
+            stagger: 0.02,
+            duration: 1.2,
+            ease: "power4.out",
+            clearProps: "all",
+          });
+
+          return () => split.revert();
+      }, containerRef);
+    };
+
+    const timer = setTimeout(init, 50);
+
+    return () => {
+      clearTimeout(timer);
+      if (ctx) ctx.revert();
+    };
+  }, []); // Only run once on mount to prevent re-splitting glitches
 
   return (
-    <section className="relative isolate overflow-hidden bg-navy-deep min-h-[60vh] md:min-h-[70vh] flex items-center justify-center">
+    <section ref={containerRef} className="relative isolate overflow-hidden bg-navy-deep min-h-[60vh] md:min-h-[70vh] flex items-center justify-center">
       {video && (
         <>
           <video
@@ -93,7 +115,11 @@ export function PageHero({
             <span className="eyebrow text-gold">{eyebrow}</span>
           </div>
         )}
-        <h1 ref={titleRef} className="font-display text-5xl md:text-8xl text-white leading-[1.1] max-w-5xl mx-auto drop-shadow-2xl">
+        <h1 
+          ref={titleRef} 
+          className="font-display text-5xl md:text-8xl text-white leading-[1.1] max-w-5xl mx-auto drop-shadow-2xl w-full overflow-visible [perspective:1000px] [backface-visibility:hidden] relative z-10"
+          style={{ display: 'block', width: '100%' }}
+        >
           {title}
         </h1>
         {subtitle && (

@@ -75,45 +75,53 @@ function GalleryPage() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    let ctx: gsap.Context;
 
-    const ctx = gsap.context(() => {
-      // Initial reveal
-      gsap.from(".gallery-item", {
-        y: 60,
-        opacity: 0,
-        stagger: 0.05,
-        duration: 1.2,
-        ease: "power3.out",
-      });
-
-      // Reveal other sections
-      const otherReveals = document.querySelectorAll("[data-animate]");
-      otherReveals.forEach((el) => {
-        gsap.from(el, {
-          scrollTrigger: { trigger: el, start: "top 85%" },
-          y: 40,
+    // Add a tiny delay to ensure fonts and layout are ready
+    const timer = setTimeout(() => {
+      ctx = gsap.context(() => {
+        // Initial reveal
+        gsap.from(".gallery-item", {
+          y: 60,
           opacity: 0,
+          stagger: 0.05,
           duration: 1.2,
-          ease: "power3.out"
+          ease: "power3.out",
+          clearProps: "all"
+        });
+
+        // Reveal other sections
+        const otherReveals = document.querySelectorAll("[data-animate]");
+        otherReveals.forEach((el) => {
+          gsap.from(el, {
+            scrollTrigger: { trigger: el, start: "top 85%" },
+            y: 40,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power3.out"
+          });
+        });
+
+        // Parallax effect on images
+        gsap.utils.toArray<HTMLElement>(".gallery-img").forEach((img) => {
+          gsap.to(img, {
+            scrollTrigger: {
+              trigger: img,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+            y: -40,
+            ease: "none",
+          });
         });
       });
+    }, 50);
 
-      // Parallax effect on images
-      gsap.utils.toArray<HTMLElement>(".gallery-img").forEach((img) => {
-        gsap.to(img, {
-          scrollTrigger: {
-            trigger: img,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-          y: -40,
-          ease: "none",
-        });
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
+    return () => {
+      clearTimeout(timer);
+      if (ctx) ctx.revert();
+    };
   }, [active]); // Re-run when active category changes to re-apply animations to new items
 
   return (
@@ -136,72 +144,75 @@ function GalleryPage() {
           </p>
         </section>
 
-        <section className="sticky top-[72px] z-30 bg-bg-main/95 backdrop-blur-xl border-b border-border/10">
-          <div className="container-luxe py-8 overflow-x-auto no-scrollbar">
-            <div className="flex justify-center gap-6 min-w-max">
-              {tabs.map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setActive(t)}
-                  className={`relative px-10 py-4 text-[11px] uppercase tracking-[0.4em] font-bold transition-all duration-700 ${
-                    active === t
-                      ? "text-gold scale-110"
-                      : "text-text-muted/60 hover:text-gold"
-                  }`}
-                >
-                  {t}
-                  {active === t && (
-                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-[2px] bg-gold" />
-                  )}
-                </button>
-              ))}
+        {/* Gallery Grid & Filter Section */}
+        <section className="relative">
+          <div className="sticky top-[72px] z-30 bg-bg-main/95 backdrop-blur-xl border-b border-border/10">
+            <div className="container-luxe py-8 overflow-x-auto no-scrollbar">
+              <div className="flex justify-center gap-6 min-w-max">
+                {tabs.map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setActive(t)}
+                    className={`relative px-10 py-4 text-[11px] uppercase tracking-[0.4em] font-bold transition-all duration-700 ${
+                      active === t
+                        ? "text-gold scale-110"
+                        : "text-text-muted/60 hover:text-gold"
+                    }`}
+                  >
+                    {t}
+                    {active === t && (
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-[2px] bg-gold" />
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-        </section>
 
-        <section className="container-luxe py-24 md:py-40 min-h-[60vh] relative">
-          <div className="decorative-text top-40 right-10 opacity-[0.03] rotate-90 origin-right pointer-events-none select-none">PORTFOLIO</div>
-          <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-12 gap-4 md:gap-8">
-            {filtered.map((it, i) => {
-              // Bento Logic
-              const isLarge = i % 7 === 0 || i % 7 === 3;
-              const isWide = i % 7 === 5;
-              
-              return (
-                <div
-                  key={`${it.label}-${i}`}
-                  className={`gallery-item relative overflow-hidden group shadow-sm hover:shadow-3xl transition-all duration-1000 border border-border/10 ${
-                    isLarge ? "md:col-span-6 md:row-span-2 aspect-[4/5]" : 
-                    isWide ? "md:col-span-8 aspect-[16/9]" :
-                    "md:col-span-4 aspect-square"
-                  }`}
-                >
-                  {it.type === "video" ? (
-                    <video
-                      src={it.src}
-                      className="gallery-img h-[130%] w-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    />
-                  ) : (
-                    <img
-                      src={it.src}
-                      alt={it.label}
-                      className="gallery-img h-[130%] w-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-navy-deep/40 opacity-0 group-hover:opacity-100 transition-all duration-700 flex flex-col justify-end p-10 backdrop-blur-[2px]">
-                    <div className="translate-y-8 group-hover:translate-y-0 transition-transform duration-700">
-                      <div className="eyebrow text-gold mb-3 text-xs tracking-[0.3em]">{it.cat}</div>
-                      <div className="font-display text-ivory text-3xl md:text-4xl tracking-tight leading-none">{it.label}</div>
+          <div className="container-luxe py-24 md:py-40 min-h-[60vh] relative">
+            <div className="decorative-text top-40 right-10 opacity-[0.03] rotate-90 origin-right pointer-events-none select-none">PORTFOLIO</div>
+            <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-12 gap-4 md:gap-8">
+              {filtered.map((it, i) => {
+                // Bento Logic
+                const isLarge = i % 7 === 0 || i % 7 === 3;
+                const isWide = i % 7 === 5;
+                
+                return (
+                  <div
+                    key={`${it.label}-${i}`}
+                    className={`gallery-item relative overflow-hidden group shadow-sm hover:shadow-3xl transition-all duration-1000 border border-border/10 ${
+                      isLarge ? "md:col-span-6 md:row-span-2 aspect-[4/5]" : 
+                      isWide ? "md:col-span-8 aspect-[16/9]" :
+                      "md:col-span-4 aspect-square"
+                    }`}
+                  >
+                    {it.type === "video" ? (
+                      <video
+                        src={it.src}
+                        className="gallery-img h-[130%] w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                      />
+                    ) : (
+                      <img
+                        src={it.src}
+                        alt={it.label}
+                        className="gallery-img h-[130%] w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-navy-deep/40 opacity-0 group-hover:opacity-100 transition-all duration-700 flex flex-col justify-end p-10 backdrop-blur-[2px]">
+                      <div className="translate-y-8 group-hover:translate-y-0 transition-transform duration-700">
+                        <div className="eyebrow text-gold mb-3 text-xs tracking-[0.3em]">{it.cat}</div>
+                        <div className="font-display text-ivory text-3xl md:text-4xl tracking-tight leading-none">{it.label}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </section>
 

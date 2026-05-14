@@ -12,7 +12,7 @@ export function Layout({ children }: { children: ReactNode }) {
   
   return (
     <LenisProvider>
-      <div className="min-h-screen flex flex-col relative overflow-hidden">
+      <div className="min-h-screen flex flex-col relative">
         <CustomCursor />
         <FloatingWhatsApp />
         <div className="noise-overlay" />

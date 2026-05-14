@@ -177,117 +177,132 @@ function ServicesPage() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      // Reveal service sections
-      gsap.utils.toArray<HTMLElement>(".service-section").forEach((section) => {
-        const image = section.querySelector(".service-image");
-        const content = section.querySelector(".service-content");
+    let ctx: gsap.Context;
 
-        gsap.from(image, {
-          scrollTrigger: { trigger: section, start: "top 80%" },
-          x: section.classList.contains("reverse") ? 60 : -60,
-          opacity: 0,
-          duration: 1.4,
-          ease: "power3.out",
-        });
+    // Add a tiny delay to ensure fonts and layout are ready
+    const timer = setTimeout(() => {
+      ctx = gsap.context(() => {
+        // Reveal service sections
+        gsap.utils.toArray<HTMLElement>(".service-section").forEach((section) => {
+          const image = section.querySelector(".service-image");
+          const content = section.querySelector(".service-content");
 
-        gsap.from(content, {
-          scrollTrigger: { trigger: section, start: "top 80%" },
-          x: section.classList.contains("reverse") ? -60 : 60,
-          opacity: 0,
-          duration: 1.4,
-          ease: "power3.out",
-        });
-
-        // Stagger bullets
-        gsap.from(section.querySelectorAll("li"), {
-          scrollTrigger: { trigger: section, start: "top 70%" },
-          y: 20,
-          opacity: 0,
-          stagger: 0.08,
-          duration: 0.8,
-          delay: 0.4,
-        });
-      });
-
-      // Animate steps
-      gsap.from(".step-item", {
-        scrollTrigger: { trigger: ".steps-container", start: "top 85%" },
-        scale: 0.9,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: "power2.out",
-      });
-
-      // Alchemy Horizontal Scroll - Professional Implementation
-      const trigger = document.querySelector(".alchemy-trigger") as HTMLElement;
-      const track = document.querySelector(".alchemy-track") as HTMLElement;
-      
-      if (trigger && track) {
-        // MASTER PINNING TIMELINE
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: ".alchemy-trigger",
-            pin: true,
-            scrub: 1,
-            start: "top top",
-            // Dynamic end based on actual content width
-            end: () => `+=${track.scrollWidth}`,
-            invalidateOnRefresh: true,
-            anticipatePin: 1,
-            // Use transform for pinning if Lenis is active to avoid 'fixed' context bugs
-            pinType: "transform", 
-            onUpdate: (self) => {
-              gsap.set(".alchemy-progress-bar", { scaleX: self.progress });
-            }
-          }
-        });
-
-        // 1. Move the track horizontally
-        tl.to(track, {
-          x: () => -(track.scrollWidth - window.innerWidth),
-          ease: "none",
-        });
-
-        // 2. Individual Card Reveal (Cool Rotation/Scale effect)
-        const cards = gsap.utils.toArray<HTMLElement>(".alchemy-card");
-        cards.forEach((card) => {
-          gsap.from(card, {
-            scrollTrigger: {
-              trigger: card,
-              containerAnimation: tl,
-              start: "left 90%",
-              toggleActions: "play none none reverse",
-            },
-            rotateY: 25,
-            scale: 0.9,
+          gsap.from(image, {
+            scrollTrigger: { trigger: section, start: "top 80%" },
+            x: section.classList.contains("reverse") ? 60 : -60,
             opacity: 0,
-            duration: 0.6,
-            ease: "power2.out"
+            duration: 1.4,
+            ease: "power3.out",
+            clearProps: "all"
+          });
+
+          gsap.from(content, {
+            scrollTrigger: { trigger: section, start: "top 80%" },
+            x: section.classList.contains("reverse") ? -60 : 60,
+            opacity: 0,
+            duration: 1.4,
+            ease: "power3.out",
+            clearProps: "all"
+          });
+
+          // Stagger bullets
+          gsap.from(section.querySelectorAll("li"), {
+            scrollTrigger: { trigger: section, start: "top 70%" },
+            y: 20,
+            opacity: 0,
+            stagger: 0.08,
+            duration: 0.8,
+            delay: 0.4,
+            clearProps: "all"
           });
         });
 
-        // Parallax background text
-        gsap.to(".alchemy-bg-text", {
-          x: -500,
-          scrollTrigger: {
-            trigger: ".alchemy-trigger",
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-          }
+        // Animate steps
+        gsap.from(".step-item", {
+          scrollTrigger: { trigger: ".steps-container", start: "top 85%" },
+          scale: 0.9,
+          opacity: 0,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "power2.out",
+          clearProps: "all"
         });
 
-        // Professional Refresh Management
-        ScrollTrigger.refresh();
-        setTimeout(() => ScrollTrigger.refresh(), 500);
-      }
+        // Alchemy Horizontal Scroll - Professional Implementation
+        const trigger = document.querySelector(".alchemy-trigger") as HTMLElement;
+        const track = document.querySelector(".alchemy-track") as HTMLElement;
+        
+        if (trigger && track) {
+          // MASTER PINNING TIMELINE
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: ".alchemy-trigger",
+              pin: true,
+              scrub: 1,
+              start: "top top",
+              // Dynamic end based on actual content width
+              end: () => `+=${track.scrollWidth}`,
+              invalidateOnRefresh: true,
+              anticipatePin: 1,
+              // Use transform for pinning if Lenis is active to avoid 'fixed' context bugs
+              pinType: "transform", 
+              onUpdate: (self) => {
+                gsap.set(".alchemy-progress-bar", { scaleX: self.progress });
+              }
+            }
+          });
 
-      // Reveal other sections
-    }, containerRef);
+          // 1. Move the track horizontally
+          tl.to(track, {
+            x: () => -(track.scrollWidth - window.innerWidth),
+            ease: "none",
+          });
 
-    return () => ctx.revert();
+          // 2. Individual Card Reveal (Cool Rotation/Scale effect)
+          const cards = gsap.utils.toArray<HTMLElement>(".alchemy-card");
+          cards.forEach((card) => {
+            gsap.from(card, {
+              scrollTrigger: {
+                trigger: card,
+                containerAnimation: tl,
+                start: "left 90%",
+                toggleActions: "play none none reverse",
+              },
+              rotateY: 25,
+              scale: 0.9,
+              opacity: 0,
+              duration: 0.6,
+              ease: "power2.out"
+            });
+          });
+
+          // Parallax background text
+          gsap.to(".alchemy-bg-text", {
+            x: -500,
+            scrollTrigger: {
+              trigger: ".alchemy-trigger",
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            }
+          });
+
+          // Professional Refresh Management
+          ScrollTrigger.refresh();
+          setTimeout(() => {
+            ScrollTrigger.refresh();
+          }, 100);
+          setTimeout(() => {
+            ScrollTrigger.refresh();
+          }, 500);
+        }
+      }, containerRef);
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      if (ctx) ctx.revert();
+    };
   }, []);
 
   return (

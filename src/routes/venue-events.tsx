@@ -44,53 +44,62 @@ function VenuePage() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      // Section Reveals
-      const reveals = document.querySelectorAll("[data-animate]");
-      reveals.forEach((el) => {
-        gsap.from(el, {
+    let ctx: gsap.Context;
+
+    // Add a tiny delay to ensure fonts and layout are ready
+    const timer = setTimeout(() => {
+      ctx = gsap.context(() => {
+        // Section Reveals
+        const reveals = document.querySelectorAll("[data-animate]");
+        reveals.forEach((el) => {
+          gsap.from(el, {
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+            },
+            y: 40,
+            opacity: 0,
+            duration: 1,
+            ease: "power2.out",
+            clearProps: "all"
+          });
+        });
+
+        // Parallax Images
+        const parallaxImgs = document.querySelectorAll(".parallax-img");
+        parallaxImgs.forEach((img) => {
+          gsap.to(img, {
+            scrollTrigger: {
+              trigger: img,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true
+            },
+            y: -40,
+            ease: "none"
+          });
+        });
+
+        // City Grid Stagger
+        gsap.from(".city-tag", {
           scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
+            trigger: ".city-grid",
+            start: "top 80%",
           },
-          y: 40,
+          scale: 0.8,
           opacity: 0,
-          duration: 1,
-          ease: "power2.out"
+          stagger: 0.05,
+          duration: 0.8,
+          ease: "back.out(1.7)",
+          clearProps: "all"
         });
-      });
+      }, containerRef);
+    }, 50);
 
-      // Parallax Images
-      const parallaxImgs = document.querySelectorAll(".parallax-img");
-      parallaxImgs.forEach((img) => {
-        gsap.to(img, {
-          scrollTrigger: {
-            trigger: img,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true
-          },
-          y: -40,
-          ease: "none"
-        });
-      });
-
-      // City Grid Stagger
-      gsap.from(".city-tag", {
-        scrollTrigger: {
-          trigger: ".city-grid",
-          start: "top 80%",
-        },
-        scale: 0.8,
-        opacity: 0,
-        stagger: 0.05,
-        duration: 0.8,
-        ease: "back.out(1.7)"
-      });
-
-    }, containerRef);
-
-    return () => ctx.revert();
+    return () => {
+      clearTimeout(timer);
+      if (ctx) ctx.revert();
+    };
   }, []);
 
   return (

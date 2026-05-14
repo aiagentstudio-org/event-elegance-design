@@ -47,38 +47,46 @@ function TeamPage() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      // Founder Image Parallax
-      gsap.to(".founder-image", {
-        scrollTrigger: {
-          trigger: ".founder-section",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true
-        },
-        y: -50,
-        ease: "none"
-      });
+    let ctx: gsap.Context;
 
-      // Values Stagger
-      // Generic Reveal for Sections
-      const revealSections = document.querySelectorAll("[data-reveal]");
-      revealSections.forEach((el) => {
-        gsap.from(el, {
+    // Add a tiny delay to ensure fonts and layout are ready
+    const timer = setTimeout(() => {
+      ctx = gsap.context(() => {
+        // Founder Image Parallax
+        gsap.to(".founder-image", {
           scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
+            trigger: ".founder-section",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true
           },
-          y: 30,
-          opacity: 0,
-          duration: 1,
-          ease: "power2.out"
+          y: -50,
+          ease: "none"
         });
-      });
 
-    }, containerRef);
+        // Values Stagger
+        // Generic Reveal for Sections
+        const revealSections = document.querySelectorAll("[data-reveal]");
+        revealSections.forEach((el) => {
+          gsap.from(el, {
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+            },
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            ease: "power2.out",
+            clearProps: "all"
+          });
+        });
+      }, containerRef);
+    }, 50);
 
-    return () => ctx.revert();
+    return () => {
+      clearTimeout(timer);
+      if (ctx) ctx.revert();
+    };
   }, []);
 
   return (

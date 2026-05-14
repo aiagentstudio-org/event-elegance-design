@@ -93,73 +93,88 @@ function HomePage() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    let ctx: gsap.Context;
 
-    const ctx = gsap.context(() => {
-      // Hero Animation - Targeted & Clean
-      const hTitle = containerRef.current?.querySelector(".hero-title");
-      if (hTitle) {
-        const split = new SplitType(hTitle as HTMLElement, { types: "words,chars" });
-        gsap.from(split.chars, {
-          y: 40,
+    // Add a tiny delay to ensure fonts and layout are ready
+    const timer = setTimeout(() => {
+      ctx = gsap.context(() => {
+        // Hero Animation - Targeted & Clean
+        const hTitle = containerRef.current?.querySelector(".hero-title");
+        if (hTitle) {
+          const split = new SplitType(hTitle as HTMLElement, { types: "words,chars" });
+          gsap.from(split.chars, {
+            y: 40,
+            opacity: 0,
+            rotateX: -20,
+            stagger: 0.02,
+            duration: 1.2,
+            ease: "power4.out",
+            delay: 0.1,
+            clearProps: "all"
+          });
+
+          return () => split.revert();
+        }
+
+        gsap.from(".hero-sub", {
           opacity: 0,
-          rotateX: -20,
-          stagger: 0.02,
-          duration: 1.2,
-          ease: "power4.out",
-          delay: 0.3
-        });
-      }
-
-      gsap.from(".hero-sub", {
-        opacity: 0,
-        y: 20,
-        duration: 1,
-        ease: "power2.out",
-        delay: 1.2
-      });
-
-      gsap.from(".hero-cta", {
-        opacity: 0,
-        y: 20,
-        duration: 1,
-        ease: "power2.out",
-        delay: 1.4
-      });
-
-
-      // Section Reveals
-      const revealSections = document.querySelectorAll("[data-animate]");
-      revealSections.forEach((section) => {
-        gsap.from(section, {
-          scrollTrigger: {
-            trigger: section,
-            start: "top 85%",
-          },
-          y: 60,
-          opacity: 0,
+          y: 20,
           duration: 1,
-          ease: "power3.out"
+          ease: "power2.out",
+          delay: 0.8,
+          clearProps: "all"
         });
-      });
 
-      // Parallax on Gallery
-      const galleryItems = document.querySelectorAll(".gallery-item");
-      galleryItems.forEach((item) => {
-        gsap.to(item.querySelector("img"), {
-          scrollTrigger: {
-            trigger: item,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true
-          },
-          y: -60,
-          ease: "none"
+        gsap.from(".hero-cta", {
+          opacity: 0,
+          y: 20,
+          duration: 1,
+          ease: "power2.out",
+          delay: 1,
+          clearProps: "all"
         });
-      });
 
-    }, containerRef);
+        // Section Reveals
+        const revealSections = document.querySelectorAll("[data-animate]");
+        revealSections.forEach((section) => {
+          gsap.from(section, {
+            scrollTrigger: {
+              trigger: section,
+              start: "top 90%",
+              once: true // Only animate once for better performance
+            },
+            y: 40,
+            opacity: 0,
+            duration: 1,
+            ease: "power2.out",
+            clearProps: "all"
+          });
+        });
 
-    return () => ctx.revert();
+        // Parallax on Gallery
+        const galleryItems = document.querySelectorAll(".gallery-item");
+        galleryItems.forEach((item) => {
+          gsap.to(item.querySelector("img"), {
+            scrollTrigger: {
+              trigger: item,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true
+            },
+            y: -60,
+            ease: "none"
+          });
+        });
+        
+        ScrollTrigger.refresh();
+        setTimeout(() => ScrollTrigger.refresh(), 200);
+      }, containerRef);
+    }, 150);
+
+    return () => {
+      clearTimeout(timer);
+      if (ctx) ctx.revert();
+    };
   }, []);
 
   return (
