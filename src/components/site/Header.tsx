@@ -28,7 +28,7 @@ export function Header() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-navy/90 backdrop-blur-xl border-b border-white/5 py-1 shadow-2xl"
+          ? "bg-bg-main/90 backdrop-blur-xl border-b border-white/5 py-1 shadow-2xl"
           : "bg-transparent py-3"
       }`}
     >
@@ -36,7 +36,7 @@ export function Header() {
         <Link to="/" className="flex items-center gap-3 group">
           <Logo className="h-12 w-12 transition-transform duration-700 group-hover:rotate-[15deg]" />
           <div className="hidden sm:block leading-tight">
-            <div className="font-display text-xl font-semibold text-ivory tracking-wide">RS Group</div>
+            <div className="font-display text-xl font-semibold text-text-main tracking-wide">RS Group</div>
             <div className="text-[10px] uppercase tracking-[0.4em] text-gold">Artisans of Events</div>
           </div>
         </Link>
@@ -46,7 +46,7 @@ export function Header() {
             <Link
               key={n.to}
               to={n.to}
-              className="text-xs uppercase tracking-widest text-ivory/80 hover:text-gold transition-all duration-300 relative group"
+              className="text-xs uppercase tracking-widest text-text-main/80 hover:text-gold transition-all duration-300 relative group"
               activeProps={{ className: "text-gold" }}
               activeOptions={{ exact: n.to === "/" }}
             >
@@ -59,7 +59,7 @@ export function Header() {
         <div className="flex items-center gap-4">
           <Link
             to="/contact"
-            className="hidden md:inline-flex items-center justify-center rounded-sm bg-gold px-6 py-2.5 text-[11px] uppercase tracking-[0.2em] font-bold text-navy hover:bg-ivory hover:text-navy transition-all duration-500 shadow-[var(--shadow-gold)]"
+            className="hidden md:inline-flex items-center justify-center rounded-sm bg-gold px-6 py-2.5 text-[11px] uppercase tracking-[0.2em] font-bold text-bg-main hover:bg-text-main transition-all duration-500"
           >
             Inquire
           </Link>
@@ -74,14 +74,14 @@ export function Header() {
       </div>
 
       {open && (
-        <div className="lg:hidden bg-navy-deep/95 backdrop-blur-2xl border-t border-gold/20 h-screen overflow-hidden">
+        <div className="lg:hidden bg-bg-main/95 backdrop-blur-2xl border-t border-gold/20 h-screen overflow-hidden">
           <nav className="container-luxe flex flex-col py-10 gap-2">
             {NAV.map((n) => (
               <Link
                 key={n.to}
                 to={n.to}
                 onClick={() => setOpen(false)}
-                className="py-4 text-2xl font-display text-ivory/90 hover:text-gold border-b border-white/5"
+                className="py-4 text-2xl font-display text-text-main/90 hover:text-gold border-b border-white/5"
                 activeProps={{ className: "text-gold" }}
                 activeOptions={{ exact: n.to === "/" }}
               >

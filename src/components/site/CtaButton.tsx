@@ -10,9 +10,9 @@ type Props = {
 };
 
 const styles = {
-  gold: "bg-gold text-navy hover:bg-gold-light shadow-[var(--shadow-gold)]",
-  outline: "border border-gold text-gold hover:bg-gold hover:text-navy",
-  navy: "bg-navy text-ivory hover:bg-navy-light",
+  gold: "bg-gold text-bg-main hover:bg-gold-light",
+  outline: "border border-white/20 text-text-main hover:border-gold hover:text-gold",
+  navy: "bg-bg-accent text-text-main hover:bg-white/5 border border-white/5",
 };
 
 export function CtaButton({ to, href, variant = "gold", children, className = "" }: Props) {

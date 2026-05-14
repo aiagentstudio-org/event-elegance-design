@@ -28,9 +28,9 @@ export function SectionHeading({
             <span className="eyebrow">{eyebrow}</span>
           </div>
         )}
-        <h2 className={`font-display text-4xl md:text-6xl ${light ? "text-ivory" : "text-navy"}`}>{title}</h2>
+        <h2 className={`font-display text-4xl md:text-7xl ${light ? "text-text-main" : "text-bg-main"}`}>{title}</h2>
         {subtitle && (
-          <p className={`mt-6 text-lg md:text-xl font-light ${light ? "text-ivory/80" : "text-charcoal/75"}`}>{subtitle}</p>
+          <p className={`mt-6 text-lg md:text-xl font-light ${light ? "text-text-muted" : "text-text-muted"}`}>{subtitle}</p>
         )}
       </div>
     </div>

@@ -4,17 +4,17 @@ import { Logo } from "./Logo";
 
 export function Footer() {
   return (
-    <footer className="bg-navy-deep text-ivory/85 mt-24">
+    <footer className="bg-bg-card text-text-main/85 mt-24 border-t border-white/5">
       <div className="container-luxe py-16 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-3">
             <Logo className="h-14 w-14" />
             <div>
-              <div className="font-display text-xl text-ivory">RS Group</div>
+              <div className="font-display text-xl text-text-main">RS Group</div>
               <div className="text-[10px] uppercase tracking-[0.3em] text-gold">Events</div>
             </div>
           </div>
-          <p className="mt-4 text-sm leading-relaxed text-ivory/70">
+          <p className="mt-4 text-sm leading-relaxed text-text-muted">
             Luxury wedding & corporate event planners crafting unforgettable celebrations across Delhi NCR.
           </p>
         </div>
@@ -50,8 +50,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-ivory/10">
-        <div className="container-luxe py-5 flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-ivory/60">
+      <div className="border-t border-white/10">
+        <div className="container-luxe py-5 flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-text-muted">
           <p>© {new Date().getFullYear()} RS Group Events. All rights reserved.</p>
           <p>Crafted with elegance for unforgettable moments.</p>
         </div>
