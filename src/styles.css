@@ -44,14 +44,14 @@
   --radius: 0.5rem;
 
   /* Dark Luxury Palette (from Guide) */
-  --bg-main: #0A0A0A;
+  --bg-main: #0a0a0a;
   --bg-card: #111111;
-  --bg-accent: #1A1A2E;
-  --text-main: #F1F1EE;
+  --bg-accent: #1a1a2e;
+  --text-main: #f1f1ee;
   --text-muted: #888888;
-  --gold: #D4AF37;
-  --gold-light: #F5E8BF;
-  --electric-blue: #0066FF;
+  --gold: #d4af37;
+  --gold-light: #f5e8bf;
+  --electric-blue: #0066ff;
 
   /* Legacy Maps for compatibility */
   --navy: var(--bg-main);
@@ -96,7 +96,6 @@
 }
 
 @layer components {
-
   /* Bento Grid Utilities */
   .bento-grid {
     display: grid;
@@ -126,7 +125,9 @@
     padding: 2rem;
     position: relative;
     overflow: hidden;
-    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
+    transition:
+      transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 0.4s ease;
   }
 
   .bento-card:hover {
@@ -252,7 +253,6 @@
 }
 
 @layer utilities {
-
   /* SplitType Stability Fixes */
   .word {
     white-space: nowrap !important;
@@ -307,12 +307,11 @@
     transform: rotateX(15deg) rotateZ(-10deg);
     transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   }
-  
+
   .isometric-card:hover {
     transform: rotateX(0deg) rotateZ(0deg) translateZ(20px);
   }
 }
-
 
 @keyframes progress-fast {
   0% {

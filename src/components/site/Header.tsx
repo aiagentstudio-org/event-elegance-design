@@ -36,8 +36,12 @@ export function Header() {
         <Link to="/" className="flex items-center gap-3 group">
           <Logo className="h-12 w-12 transition-transform duration-700 group-hover:rotate-[15deg]" />
           <div className="hidden sm:block leading-tight">
-            <div className="font-display text-xl font-semibold text-text-main tracking-wide">RS Group</div>
-            <div className="text-[10px] uppercase tracking-[0.4em] text-gold">Artisans of Events</div>
+            <div className="font-display text-xl font-semibold text-text-main tracking-wide">
+              RS Group
+            </div>
+            <div className="text-[10px] uppercase tracking-[0.4em] text-gold">
+              Artisans of Events
+            </div>
           </div>
         </Link>
 

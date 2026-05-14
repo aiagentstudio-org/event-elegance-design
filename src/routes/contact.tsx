@@ -12,7 +12,11 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact RS Group Events — Book Your Event in Delhi NCR" },
-      { name: "description", content: "Plan your wedding, corporate event or celebration with RS Group Events. Call, WhatsApp or send an enquiry — we respond within 24 hours." },
+      {
+        name: "description",
+        content:
+          "Plan your wedding, corporate event or celebration with RS Group Events. Call, WhatsApp or send an enquiry — we respond within 24 hours.",
+      },
       { property: "og:title", content: "Contact RS Group Events" },
       { property: "og:description", content: "Plan your event with us — Surajkund, Delhi NCR." },
     ],
@@ -22,8 +26,19 @@ export const Route = createFileRoute("/contact")({
 
 import { createServerFn } from "@tanstack/react-start";
 
-const submitInquiry = createServerFn({ method: "POST" })
-  .handler(async (ctx: any) => {
+interface InquiryData {
+  name: string;
+  email: string;
+  phone: string;
+  event: string;
+  date?: string;
+  guests?: string;
+  location?: string;
+  message?: string;
+}
+
+const submitInquiry = createServerFn({ method: "POST" }).handler(
+  async (ctx: { data: InquiryData }) => {
     const data = ctx.data;
     console.log("------------------------------------------");
     console.log("🔥 SERVER FUNCTION TRIGGERED: submitInquiry");
@@ -94,7 +109,8 @@ const submitInquiry = createServerFn({ method: "POST" })
       console.error("SERVER ERROR: Resend delivery failed:", error);
       throw error;
     }
-  });
+  },
+);
 
 function ContactPage() {
   const [sent, setSent] = useState(false);
@@ -115,7 +131,7 @@ function ContactPage() {
           stagger: 0.1,
           duration: 0.8,
           ease: "power2.out",
-          clearProps: "all" // Ensure they stay visible
+          clearProps: "all", // Ensure they stay visible
         });
 
         // Form Fields Stagger
@@ -128,7 +144,7 @@ function ContactPage() {
           opacity: 0,
           stagger: 0.05,
           duration: 0.8,
-          ease: "power3.out"
+          ease: "power3.out",
         });
       }, containerRef);
     }, 50);
@@ -155,10 +171,13 @@ function ContactPage() {
         scale: 0.9,
         opacity: 0,
         duration: 0.6,
-        ease: "back.out(1.7)"
+        ease: "back.out(1.7)",
       });
     } catch (error) {
-      console.error("CRITICAL FAILURE: Submission failed to reach server or Resend crashed:", error);
+      console.error(
+        "CRITICAL FAILURE: Submission failed to reach server or Resend crashed:",
+        error,
+      );
       // Don't setSent(true) here! Show an error state instead.
       alert("Submission failed. Please check the server logs.");
     } finally {
@@ -171,7 +190,11 @@ function ContactPage() {
       <div ref={containerRef}>
         <PageHero
           eyebrow="Contact"
-          title={<span className="hero-title">Plan your event <span className="italic text-gold">with us.</span></span>}
+          title={
+            <span className="hero-title">
+              Plan your event <span className="italic text-gold">with us.</span>
+            </span>
+          }
           subtitle="Tell us about your celebration. We'll respond within 24 hours."
           video={contactVideo}
         />
@@ -180,17 +203,44 @@ function ContactPage() {
           {/* Info Side */}
           <div className="lg:col-span-2 space-y-10">
             <div className="space-y-6">
-              <div className="gold-divider !justify-start"><span className="eyebrow">The Connection</span></div>
-              <h2 className="font-display text-4xl md:text-5xl text-text-main leading-tight">Let's talk about your vision.</h2>
-              <p className="text-text-muted text-lg leading-relaxed">Whether you have a fully formed concept or just the spark of an idea, we're here to listen and elevate.</p>
+              <div className="gold-divider !justify-start">
+                <span className="eyebrow">The Connection</span>
+              </div>
+              <h2 className="font-display text-4xl md:text-5xl text-text-main leading-tight">
+                Let's talk about your vision.
+              </h2>
+              <p className="text-text-muted text-lg leading-relaxed">
+                Whether you have a fully formed concept or just the spark of an idea, we're here to
+                listen and elevate.
+              </p>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4 info-grid">
               {[
-                { icon: Phone, label: "Direct Call", val: "+91 99535 95353", href: "tel:+919953595353" },
-                { icon: MessageCircle, label: "WhatsApp", val: "Chat with us", href: "https://wa.me/919953595353" },
-                { icon: Mail, label: "Inquiries", val: "sanjeev@rsgroupevent.com", href: "mailto:sanjeev@rsgroupevent.com" },
-                { icon: Mail, label: "General", val: "hello@rsgroupevent.com", href: "mailto:hello@rsgroupevent.com" },
+                {
+                  icon: Phone,
+                  label: "Direct Call",
+                  val: "+91 99535 95353",
+                  href: "tel:+919953595353",
+                },
+                {
+                  icon: MessageCircle,
+                  label: "WhatsApp",
+                  val: "Chat with us",
+                  href: "https://wa.me/919953595353",
+                },
+                {
+                  icon: Mail,
+                  label: "Inquiries",
+                  val: "sanjeev@rsgroupevent.com",
+                  href: "mailto:sanjeev@rsgroupevent.com",
+                },
+                {
+                  icon: Mail,
+                  label: "General",
+                  val: "hello@rsgroupevent.com",
+                  href: "mailto:hello@rsgroupevent.com",
+                },
                 { icon: MapPin, label: "The Studio", val: "Taj Hotel, Surajkund" },
                 { icon: Clock, label: "Studio Hours", val: "Mon–Sat · 10am – 7pm" },
               ].map((c) => (
@@ -200,9 +250,16 @@ function ContactPage() {
                   className="info-card group bg-navy-deep border border-white/5 p-8 hover:border-gold/50 transition-all duration-500 hover:-translate-y-2 block relative overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 w-24 h-24 bg-gold/5 rounded-full translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-1000" />
-                  <c.icon className="text-gold mb-6 group-hover:scale-110 transition-transform relative z-10" size={32} />
-                  <div className="text-[10px] uppercase tracking-[0.3em] text-ivory/40 font-bold mb-2 relative z-10">{c.label}</div>
-                  <div className="text-ivory font-display text-xl md:text-2xl mt-1 relative z-10">{c.val}</div>
+                  <c.icon
+                    className="text-gold mb-6 group-hover:scale-110 transition-transform relative z-10"
+                    size={32}
+                  />
+                  <div className="text-[10px] uppercase tracking-[0.3em] text-ivory/40 font-bold mb-2 relative z-10">
+                    {c.label}
+                  </div>
+                  <div className="text-ivory font-display text-xl md:text-2xl mt-1 relative z-10">
+                    {c.val}
+                  </div>
                 </a>
               ))}
             </div>
@@ -221,18 +278,50 @@ function ContactPage() {
                     <CheckCircle2 className="text-gold" size={40} />
                   </div>
                   <h4 className="font-display text-3xl text-text-main">Inquiry Received</h4>
-                  <p className="text-text-muted mt-4 max-w-sm mx-auto">Thank you for sharing your event details. A member of our creative team will reach out within 24 hours.</p>
-                  <button onClick={() => setSent(false)} className="mt-8 text-xs uppercase tracking-widest text-gold font-bold hover:text-navy transition-colors">Send another inquiry</button>
+                  <p className="text-text-muted mt-4 max-w-sm mx-auto">
+                    Thank you for sharing your event details. A member of our creative team will
+                    reach out within 24 hours.
+                  </p>
+                  <button
+                    onClick={() => setSent(false)}
+                    className="mt-8 text-xs uppercase tracking-widest text-gold font-bold hover:text-navy transition-colors"
+                  >
+                    Send another inquiry
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={submit} className="grid sm:grid-cols-2 gap-x-8 gap-y-6">
-                  <div className="form-field"><Field label="Full Name" name="name" required placeholder="Arjun Sharma" /></div>
-                  <div className="form-field"><Field label="Contact Number" name="phone" type="tel" required placeholder="+91 99535 95353" /></div>
-                  <div className="form-field"><Field label="Email Address" name="email" type="email" required placeholder="arjun@example.com" /></div>
+                  <div className="form-field">
+                    <Field label="Full Name" name="name" required placeholder="Arjun Sharma" />
+                  </div>
+                  <div className="form-field">
+                    <Field
+                      label="Contact Number"
+                      name="phone"
+                      type="tel"
+                      required
+                      placeholder="+91 99535 95353"
+                    />
+                  </div>
+                  <div className="form-field">
+                    <Field
+                      label="Email Address"
+                      name="email"
+                      type="email"
+                      required
+                      placeholder="arjun@example.com"
+                    />
+                  </div>
                   <div className="form-field">
                     <Field label="Event Type" name="event">
-                      <select name="event" required className="w-full bg-transparent border-b border-input py-3 text-sm text-text-main focus:outline-none focus:border-gold transition-colors appearance-none cursor-pointer">
-                        <option value="" className="bg-[#0A0A0A] text-[#F1F1EE]">Select type…</option>
+                      <select
+                        name="event"
+                        required
+                        className="w-full bg-transparent border-b border-input py-3 text-sm text-text-main focus:outline-none focus:border-gold transition-colors appearance-none cursor-pointer"
+                      >
+                        <option value="" className="bg-[#0A0A0A] text-[#F1F1EE]">
+                          Select type…
+                        </option>
                         <option className="bg-[#0A0A0A] text-[#F1F1EE]">Wedding / Shaadi</option>
                         <option className="bg-[#0A0A0A] text-[#F1F1EE]">Reception</option>
                         <option className="bg-[#0A0A0A] text-[#F1F1EE]">Sangeet / Haldi</option>
@@ -241,11 +330,23 @@ function ContactPage() {
                       </select>
                     </Field>
                   </div>
-                  <div className="form-field"><Field label="Proposed Date" name="date" type="date" /></div>
-                  <div className="form-field"><Field label="Estimated Guests" name="guests" type="number" placeholder="250" /></div>
-                  <div className="sm:col-span-2 form-field"><Field label="Venue Location" name="location" placeholder="e.g., ITC Grand Bharat, Manesar" /></div>
+                  <div className="form-field">
+                    <Field label="Proposed Date" name="date" type="date" />
+                  </div>
+                  <div className="form-field">
+                    <Field label="Estimated Guests" name="guests" type="number" placeholder="250" />
+                  </div>
                   <div className="sm:col-span-2 form-field">
-                    <label className="block text-[10px] uppercase tracking-[0.2em] text-text-muted mb-2 font-bold italic">Tell us about your vision</label>
+                    <Field
+                      label="Venue Location"
+                      name="location"
+                      placeholder="e.g., ITC Grand Bharat, Manesar"
+                    />
+                  </div>
+                  <div className="sm:col-span-2 form-field">
+                    <label className="block text-[10px] uppercase tracking-[0.2em] text-text-muted mb-2 font-bold italic">
+                      Tell us about your vision
+                    </label>
                     <textarea
                       name="message"
                       rows={4}
@@ -260,7 +361,12 @@ function ContactPage() {
                       className="group w-full bg-gold text-bg-main py-5 text-xs uppercase tracking-[0.3em] font-bold hover:bg-gold-light hover:text-bg-main transition-all duration-500 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <span>{loading ? "Sending..." : "Submit Inquiry"}</span>
-                      {!loading && <Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
+                      {!loading && (
+                        <Send
+                          size={14}
+                          className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+                        />
+                      )}
                     </button>
                   </div>
                 </form>
@@ -275,10 +381,13 @@ function ContactPage() {
           <div className="container-luxe relative z-10">
             <div className="grid md:grid-cols-3 gap-12 items-center">
               <div className="md:col-span-1">
-                <div className="gold-divider !justify-start mb-6"><span className="eyebrow !text-ivory/50">Visit Us</span></div>
+                <div className="gold-divider !justify-start mb-6">
+                  <span className="eyebrow !text-ivory/50">Visit Us</span>
+                </div>
                 <h3 className="font-display text-4xl text-ivory mb-6">The Studio</h3>
                 <p className="text-ivory/60 leading-relaxed">
-                  Located in the heart of Surajkund, our creative studio is where magic begins. We welcome scheduled consultations for a bespoke planning experience.
+                  Located in the heart of Surajkund, our creative studio is where magic begins. We
+                  welcome scheduled consultations for a bespoke planning experience.
                 </p>
                 <div className="mt-8 flex items-center gap-4 text-gold">
                   <MapPin size={20} />
@@ -303,11 +412,26 @@ function ContactPage() {
 }
 
 function Field({
-  label, name, type = "text", required, children, placeholder,
-}: { label: string; name: string; type?: string; required?: boolean; children?: React.ReactNode; placeholder?: string }) {
+  label,
+  name,
+  type = "text",
+  required,
+  children,
+  placeholder,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+  children?: React.ReactNode;
+  placeholder?: string;
+}) {
   return (
     <div className="group">
-      <label className="block text-[10px] uppercase tracking-[0.2em] text-text-muted mb-2 font-bold italic group-focus-within:text-gold transition-colors">{label}{required && <span className="text-gold"> *</span>}</label>
+      <label className="block text-[10px] uppercase tracking-[0.2em] text-text-muted mb-2 font-bold italic group-focus-within:text-gold transition-colors">
+        {label}
+        {required && <span className="text-gold"> *</span>}
+      </label>
       {children ?? (
         <input
           type={type}
@@ -320,4 +444,3 @@ function Field({
     </div>
   );
 }
-

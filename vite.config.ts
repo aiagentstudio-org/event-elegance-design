@@ -19,13 +19,13 @@ export default defineConfig({
       rollupOptions: {
         output: {
           entryFileNames: (chunk) => {
-            if (chunk.name === 'server' || chunk.facadeModuleId?.includes('server')) {
-              return 'server.js';
+            if (chunk.name === "server" || chunk.facadeModuleId?.includes("server")) {
+              return "server.js";
             }
-            return 'assets/[name]-[hash].js';
+            return "assets/[name]-[hash].js";
           },
-          chunkFileNames: 'assets/[name]-[hash].js',
-          assetFileNames: 'assets/[name]-[hash].[ext]',
+          chunkFileNames: "assets/[name]-[hash].js",
+          assetFileNames: "assets/[name]-[hash].[ext]",
         },
       },
     },

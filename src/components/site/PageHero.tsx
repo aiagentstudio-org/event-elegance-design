@@ -29,7 +29,7 @@ export function PageHero({
 
     // Wait for fonts and layout to be fully stable
     const init = async () => {
-      if (typeof document !== 'undefined' && 'fonts' in document) {
+      if (typeof document !== "undefined" && "fonts" in document) {
         await document.fonts.ready;
       }
 
@@ -50,9 +50,9 @@ export function PageHero({
 
         if (titleRef.current) {
           const split = new SplitType(titleRef.current, { types: "chars,words" });
-          
+
           // Force layout stability for split elements
-          split.words?.forEach(word => {
+          split.words?.forEach((word) => {
             word.style.display = "inline-block";
             word.style.whiteSpace = "nowrap";
           });
@@ -81,7 +81,10 @@ export function PageHero({
   }, []); // Only run once on mount to prevent re-splitting glitches
 
   return (
-    <section ref={containerRef} className="relative isolate overflow-hidden bg-navy-deep min-h-[60vh] md:min-h-[70vh] flex items-center justify-center">
+    <section
+      ref={containerRef}
+      className="relative isolate overflow-hidden bg-navy-deep min-h-[60vh] md:min-h-[70vh] flex items-center justify-center"
+    >
       {video && (
         <>
           <video
@@ -108,7 +111,9 @@ export function PageHero({
           <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/90 via-[#0A0A0A]/80 to-[#0A0A0A]" />
         </>
       )}
-      {!image && !video && <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A]" />}
+      {!image && !video && (
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A]" />
+      )}
 
       <div className="relative container-luxe py-32 md:py-48 text-center z-10">
         {eyebrow && (
@@ -116,15 +121,17 @@ export function PageHero({
             <span className="eyebrow text-gold">{eyebrow}</span>
           </div>
         )}
-        <h1 
-          ref={titleRef} 
+        <h1
+          ref={titleRef}
           className="font-display text-5xl md:text-8xl text-white leading-[1.1] max-w-5xl mx-auto drop-shadow-2xl w-full overflow-visible [perspective:1000px] [backface-visibility:hidden] relative z-10"
-          style={{ display: 'block', width: '100%' }}
+          style={{ display: "block", width: "100%" }}
         >
           {title}
         </h1>
         {subtitle && (
-          <p className="mt-8 max-w-2xl mx-auto text-white/90 text-lg md:text-xl font-light leading-relaxed drop-shadow-md">{subtitle}</p>
+          <p className="mt-8 max-w-2xl mx-auto text-white/90 text-lg md:text-xl font-light leading-relaxed drop-shadow-md">
+            {subtitle}
+          </p>
         )}
         {children && <div className="mt-12 flex flex-wrap justify-center gap-4">{children}</div>}
       </div>

@@ -73,10 +73,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "RS Group Events — Luxury Wedding & Corporate Event Planners | Delhi NCR" },
-      { name: "description", content: "RS Group Events plans luxury weddings, corporate events and private celebrations across Surajkund, Faridabad, Delhi, Gurgaon and Noida." },
+      {
+        name: "description",
+        content:
+          "RS Group Events plans luxury weddings, corporate events and private celebrations across Surajkund, Faridabad, Delhi, Gurgaon and Noida.",
+      },
       { name: "author", content: "RS Group Events" },
       { property: "og:title", content: "RS Group Events — Luxury Event Planners Delhi NCR" },
-      { property: "og:description", content: "Bespoke wedding and corporate event planning across Delhi NCR." },
+      {
+        property: "og:description",
+        content: "Bespoke wedding and corporate event planning across Delhi NCR.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@rsgroupevents" },

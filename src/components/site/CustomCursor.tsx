@@ -9,19 +9,19 @@ export function CustomCursor() {
   useEffect(() => {
     const cursor = cursorRef.current;
     const follower = followerRef.current;
-    
+
     if (!cursor || !follower) return;
 
     const onMouseMove = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
-      
+
       gsap.to(cursor, {
         x,
         y,
         duration: 0.1,
         ease: "power2.out",
       });
-      
+
       gsap.to(follower, {
         x,
         y,
@@ -41,15 +41,25 @@ export function CustomCursor() {
     const handleHover = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const isClickable = target.closest("a, button, [role='button'], input, select, textarea");
-      
+
       if (isClickable) {
         setIsHovering(true);
         gsap.to(cursor, { scale: 1.5, duration: 0.3 });
-        gsap.to(follower, { scale: 2.5, backgroundColor: "rgba(201, 162, 39, 0.15)", border: "1px solid rgba(201, 162, 39, 0.5)", duration: 0.3 });
+        gsap.to(follower, {
+          scale: 2.5,
+          backgroundColor: "rgba(201, 162, 39, 0.15)",
+          border: "1px solid rgba(201, 162, 39, 0.5)",
+          duration: 0.3,
+        });
       } else {
         setIsHovering(false);
         gsap.to(cursor, { scale: 1, duration: 0.3 });
-        gsap.to(follower, { scale: 1, backgroundColor: "transparent", border: "1px solid rgba(201, 162, 39, 0.3)", duration: 0.3 });
+        gsap.to(follower, {
+          scale: 1,
+          backgroundColor: "transparent",
+          border: "1px solid rgba(201, 162, 39, 0.3)",
+          duration: 0.3,
+        });
       }
     };
 

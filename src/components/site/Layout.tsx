@@ -9,7 +9,7 @@ import { useRouterState } from "@tanstack/react-router";
 
 export function Layout({ children }: { children: ReactNode }) {
   const router = useRouterState();
-  
+
   return (
     <LenisProvider>
       <div className="min-h-screen flex flex-col relative">

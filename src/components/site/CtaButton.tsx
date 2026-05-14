@@ -17,6 +17,15 @@ const styles = {
 
 export function CtaButton({ to, href, variant = "gold", children, className = "" }: Props) {
   const cls = `inline-flex items-center justify-center rounded-sm px-7 py-3 text-sm font-medium tracking-wide uppercase transition-all duration-300 ${styles[variant]} ${className}`;
-  if (href) return <a href={href} className={cls}>{children}</a>;
-  return <Link to={to ?? "/"} className={cls}>{children}</Link>;
+  if (href)
+    return (
+      <a href={href} className={cls}>
+        {children}
+      </a>
+    );
+  return (
+    <Link to={to ?? "/"} className={cls}>
+      {children}
+    </Link>
+  );
 }
