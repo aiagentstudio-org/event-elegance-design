@@ -68,6 +68,7 @@ export function PageHero({
           });
 
           return () => split.revert();
+        }
       }, containerRef);
     };
 
