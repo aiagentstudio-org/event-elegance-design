@@ -31,7 +31,7 @@ const submitInquiry = createServerFn("POST", async (data: any) => {
 
   try {
     // 1. Send inquiry notification to RS Group
-    await resend.emails.send({
+    const adminEmail = await resend.emails.send({
       from: "RS Group Inquiries <onboarding@resend.dev>", // Replace with verified domain in production
       to: ["hello@rsgroupevent.com"],
       subject: `New Event Inquiry: ${event} — ${name}`,
@@ -51,8 +51,10 @@ const submitInquiry = createServerFn("POST", async (data: any) => {
       `,
     });
 
+    console.info("SERVER LOG: Admin notification sent successfully.", adminEmail.data?.id);
+
     // 2. Send "Thank You" confirmation to the sender
-    await resend.emails.send({
+    const userEmail = await resend.emails.send({
       from: "RS Group Events <onboarding@resend.dev>", // Replace with verified domain in production
       to: [email],
       subject: `Namaste — We've received your inquiry`,
@@ -78,9 +80,11 @@ const submitInquiry = createServerFn("POST", async (data: any) => {
       `,
     });
 
-    return { success: true };
+    console.info("SERVER LOG: Confirmation email sent to user.", userEmail.data?.id);
+
+    return { success: true, adminId: adminEmail.data?.id, userId: userEmail.data?.id };
   } catch (error) {
-    console.error("Resend error:", error);
+    console.error("SERVER ERROR: Resend delivery failed:", error);
     throw error;
   }
 });
@@ -136,7 +140,8 @@ function ContactPage() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      await submitInquiry(data);
+      const response = await submitInquiry(data);
+      console.log("SUCCESS: Inquiry sent to server successfully.", response);
       setSent(true);
       // Add success animation
       gsap.from(".success-message", {
@@ -146,7 +151,7 @@ function ContactPage() {
         ease: "back.out(1.7)"
       });
     } catch (error) {
-      console.error("Submission failed:", error);
+      console.error("CRITICAL FAILURE: Submission failed to reach server or Resend crashed:", error);
       // Even if Resend fails due to missing API key in dev, we'll show success for UI demo
       // but in real app we'd handle error properly.
       setSent(true); 
