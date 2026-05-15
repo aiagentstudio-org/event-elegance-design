@@ -4,10 +4,11 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "start": "vite preview",
-    "dev": "vite dev",
+    "start": "vite preview --port 3000 --strictPort",
+    "dev": "vite dev --port 3000",
     "clean": "node -e \"const fs = require('fs'); if (fs.existsSync('dist')) fs.rmSync('dist', { recursive: true, force: true })\"",
     "build": "vite build",
+    "postbuild": "node -e \"const fs = require('fs'); const path = require('path'); const src = 'dist/client'; const dest = '.vercel/output/static'; if (fs.existsSync(src)) { fs.mkdirSync(dest, { recursive: true }); const copy = (s, d) => { fs.readdirSync(s).forEach(f => { const sp = path.join(s, f); const dp = path.join(d, f); if (fs.statSync(sp).isDirectory()) { fs.mkdirSync(dp, { recursive: true }); copy(sp, dp); } else { fs.copyFileSync(sp, dp); } }); }; copy(src, dest); } if (fs.existsSync('dist/server/index.js')) fs.copyFileSync('dist/server/index.js', 'dist/server/server.js');\"",
     "build:dev": "vite build --mode development",
     "preview": "npx wrangler dev -c dist/server/wrangler.json",
     "lint": "eslint .",
